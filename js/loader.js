@@ -8,6 +8,7 @@
         'js/Components/GameComponent.js',
         'js/Components/RenderSprite.js',
         'js/Components/RenderText.js',
+        'js/Components/RenderParticles.js',
         'js/Components/Transform.js',
         'js/Core/GameObject.js',
 

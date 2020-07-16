@@ -42,10 +42,7 @@ class GameObject {
 	}
 	draw(){
 
-
-
     	//Matrix.push(this.transform.matrix.parentToLocal);
-
 
 		if(this.drawable){
     		this.transform.matrix.localToWorld.apply();

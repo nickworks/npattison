@@ -64,6 +64,7 @@ class Transform extends GameComponent {
 		gfx.fillStyle="#FFF";
 		gfx.fillCircle(0,0,3);
 		this.rect.draw();
+		Font.basic.apply();
 		gfx.fillText("size: "+this.rect.w+"x"+this.rect.h, 3,-3);
 	}
 	calcMatrices(){

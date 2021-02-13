@@ -54,7 +54,7 @@ class RenderParticles extends GameComponent {
 		this.countdown=0;
 		this.img=new Image();
 		this.img.addEventListener("load", e=>{
-			console.log("image loaded");
+			//console.log("image loaded");
 		});
 		this.load(url);
 	}

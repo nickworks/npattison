@@ -5,16 +5,14 @@ class SceneTitle extends Scene {
 
         this.panel = Factory.Empty(vec2(20,-20),vec2(0,1));
         this.panel.transform.rect.w=200;
-        this.panel.transform.rect.h=-50;
+        this.panel.transform.rect.h=50;
         
         this.objs.add(this.panel);
         
-        var hello = Factory.TextField("Hello world!",vec2(0,-50),vec2(0,0),{size:30,align:"center",valign:"middle"})
-        
+        var hello = Factory.TextField("Hello world!",vec2(0,-20),vec2(0,0), Font.big);
         hello.transform.parent = this.panel.transform;
         
         this.p = Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1));
-        
         this.objs.add(this.p);
         
         this.delayUntilSpawnMountain = 0;

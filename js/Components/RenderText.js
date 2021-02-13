@@ -4,7 +4,7 @@ class RenderText extends GameComponent {
 		this.text=text;
 	    this.x=0;
 	    this.y=0;
-	    this.font=new Font(font);
+	    this.font=font;
 	}
 	draw(){
         this.font.apply();

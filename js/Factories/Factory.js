@@ -7,9 +7,9 @@ const Factory = {
 		obj.transform.anchor.y=o.y;
 		return obj;
 	},
-	TextField(text="hello",p=vec2(0,0),o=vec2(0,0),options={size:20, align:"left", valign:"middle"}){
+	TextField(text="hello",p=vec2(0,0),o=vec2(0,0),font=Font.basic){
 		const obj = this.Empty(p,o);
-		obj.addComponent(new RenderText(text,p.x,p.y,options ) );
+		obj.addComponent(new RenderText(text, font) );
 		return obj;
 	},
 	Sprite(src="",p=vec2(0,0),o=vec2(0,0)){

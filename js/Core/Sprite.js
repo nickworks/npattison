@@ -10,13 +10,13 @@ class Sprite {
         this.x = 0;
         this.y = 0;
         this.angle = 0;
-        this.scale = 1;
+        this.scale = vec2(1,1);
         this.anchor = {x:0, y:0};
     }
     draw (){
         gfx.translate(this.x, this.y);
         gfx.rotate(0);
-        gfx.scale(this.scale, this.scale);
+        gfx.scale(this.scale.x, this.scale.y);
         gfx.drawImage(this.img, -this.anchor.x, -this.anchor.y);
         gfx.endTransform();
     }

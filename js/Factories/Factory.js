@@ -17,4 +17,9 @@ const Factory = {
 		obj.addComponent( new RenderSprite(src) );
 		return obj;
 	},
+	Shape(pts=[],p=vec2(0,0),o=vec2(0,0)){
+		const obj = this.Empty(p,o);
+		obj.addComponent( new RenderShape(pts) );
+		return obj;
+	},
 };

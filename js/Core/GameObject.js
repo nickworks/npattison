@@ -66,7 +66,8 @@ class GameObject {
 	getComponent(type){
 		let result = null;
 		this.components.forEach(c => {
-			if(c.constructor.name == type) result = c;
+			if(c.constructor.name === type) result = c; // if type is String -- "RenderSprite"
+			if(c.constructor === type) result = c; // if type is a constructor -- RenderSprite
 		});
 		return result;
 	}

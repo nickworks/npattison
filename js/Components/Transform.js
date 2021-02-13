@@ -9,7 +9,7 @@ class Transform extends GameComponent {
 		this.rect = new Rect(0,0,0,0); // this canvas is used to position child GameObjects
 
 		this.angle = 0;
-		this.scale = 1;
+		this.scale = vec2(1,1);
 
 		this.children = [];
 		this._parent = null;
@@ -74,9 +74,9 @@ class Transform extends GameComponent {
 		m1.translate(p.x, p.y);
 		m1.translate(this.position.x, this.position.y);
         m1.rotate(this.angle);
-        m1.scale(this.scale);
+        m1.scale(this.scale.x, this.scale.y);
 
-        m2.scale(1/this.scale);
+        m2.scale(1/this.scale.x, 1/this.scale.y);
         m2.rotate(-this.angle);
         m2.translate(-this.position.x, -this.position.y);
         m2.translate(-p.x, -p.y);

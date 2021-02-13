@@ -17,9 +17,9 @@ class Matrix {
         const s=Matrix.stack.length;
         return (s<=0)?new Matrix():Matrix.stack[s-1];
     }
-    static scale(s) {
-        // this scales the top Matrix in the stack by `s` percent
-        Matrix.last().scale(s);
+    static scale(sx, sy) {
+        // this scales the top Matrix in the stack by `sx` and `sy` percent
+        Matrix.last().scale(sx, sy);
         Matrix.apply();
     }
     static translate(x,y) {
@@ -73,8 +73,10 @@ class Matrix {
         this.e=raw.e||0;
         this.f=raw.f||0;
     }
-    scale(s){
-        this.mult(new Matrix({a:s,d:s}));
+    scale(sx,sy){
+        sx = Number(sx);
+        sy = (sy == null) ? sx : Number(sy);
+        this.mult(new Matrix({a:sx,d:sy}));
         //this.inverse.mult(new Matrix({a:1/s,b:1/s}),true);
     }
     translate(x,y){

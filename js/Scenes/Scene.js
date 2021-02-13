@@ -23,6 +23,12 @@ class Scene {
                     case "some class":
                 }
             },
+            addAt(obj, i){
+                this.all.splice(i,0,obj);
+            },
+            addAtBack(obj){
+                this.all.unshift(obj);
+            },
             remove(obj){
                 this.removeFrom(obj, this.all);
             },
@@ -50,6 +56,7 @@ class Scene {
                 return sorted;
             }
         };
+        this.color="#666676";
         this.objs.clear();
         this.guis={
             overlays:[],
@@ -73,7 +80,7 @@ class Scene {
         this.guis.pause = null;
     }
 	draw(){
-        game.view.fill("#666676");
+        game.view.fill(this.color);
 
         this.cam.drawStart();
         this.objs.all.forEach(o => o.draw());

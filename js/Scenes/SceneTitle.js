@@ -12,7 +12,7 @@ class SceneTitle extends Scene {
         this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;
 
 
-        this.color="#668";
+        this.color=Color.HSV(200,50,25);
     }
     update(){
 
@@ -27,9 +27,9 @@ class SceneTitle extends Scene {
     }
     makeNextRange(){
         
-        this.delayUntilSpawnMountain = .5;
+        this.delayUntilSpawnMountain = Maths.rand(.5,1);
 
-        const obj = Factory.Empty(vec2(0, 300));
+        const obj = Factory.Empty(vec2(0,game.view.size.h-100),vec2(0,0));
         obj.addComponent( new MountainRange() );
 
         this.objs.addAtBack(obj);

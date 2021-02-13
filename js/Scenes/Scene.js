@@ -56,7 +56,7 @@ class Scene {
                 return sorted;
             }
         };
-        this.color="#666676";
+        this.color="#888";
         this.objs.clear();
         this.guis={
             overlays:[],

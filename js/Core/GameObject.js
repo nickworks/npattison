@@ -6,7 +6,7 @@ class GameObject {
 
 		// cached values:
 		this._transform = null;
-
+		this._hasNeverTicked = true;
 
 		// flags:
 		this.updateable = false;
@@ -26,7 +26,16 @@ class GameObject {
 			scene.objs.remove(this);
 		}
 	}
+	start(){
+		this._hasNeverTicked = false;
+		this.components.forEach(c => {
+			if(c.start)c.start()
+		});
+	}
 	update(){
+
+		if(this._hasNeverTicked) this.start();
+
 		if(this.updateable){
 			// update components:
 			this.components.forEach(c => {

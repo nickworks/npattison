@@ -11,25 +11,36 @@ class MountainRange extends RenderShape {
             pts.push(vec2(offset + x, y));
             if(x > width && (i%2==0)) break;
         }
-        pts.push(vec2(offset + x  , y + 150));
-        pts.push(vec2(offset - 50 , y + 150));
+        pts.push(vec2(offset + x  , y + 400));
+        pts.push(vec2(offset - 50 , y + 400));
 
         //////////// Call super constructor:
         super(pts);
-
-        this.vel =  10;
+        
+        //this.transform.scale = vec2(1,0);
+        this.vel =  -200;
+        this.lightValue = 25;
+    }
+    start(){
+        this.transform.scale = vec2(Maths.rand(1,1.1),Maths.rand(0,.1));
     }
     update(){
 
-        this.vel += 20 * game.time.dt;
+        const dt = game.time.dt;
 
+        this.vel += 50 * dt;
+
+        
         this.transform.position.x = game.view.size.w/2;
-        this.transform.position.y += this.vel * game.time.dt;
-        const p = this.transform.position.y / game.view.size.h;
-        this.transform.scale.x = 1 + p * .5;
-        this.transform.scale.y = .1 + p * 2;
-        this.color = Color.HSV(200, 50, p * 100);
+        this.transform.position.y += this.vel * dt;
+        
+        this.transform.scale.x += .2 * dt; 
+        this.transform.scale.y += .5 * dt;
+        
+        if(this.lightValue < 100) this.lightValue += 5 * dt;
+        //if(this.lightValue > 100) this.lightValue = 100;
+        this.color = Color.HSV(200, 50, this.lightValue);
 
-        if(p > 1) this.gameObject.destroy();
+        if(this.lightValue > 75) this.gameObject.destroy();
     }
 }

@@ -1,8 +1,10 @@
 class GameObject {
 
-	constructor(){
+	constructor(customBehavior={}){
 		this.components = [];
 		this.addComponent( new Transform() );
+
+		this.customBehavior = customBehavior;
 
 		// cached values:
 		this._transform = null;
@@ -18,6 +20,8 @@ class GameObject {
 	}
 	destroy(){
 
+		if(this.customBehavior.destroy) this.customBehavior.destroy();
+
 		if(this.transform.parent){
 			// if parent, remove from parent
 			this.transform.parent = null;
@@ -25,12 +29,14 @@ class GameObject {
 			// if no parent, remove from scene
 			scene.objs.remove(this);
 		}
+
 	}
 	start(){
 		this._hasNeverTicked = false;
 		this.components.forEach(c => {
 			if(c.start)c.start()
 		});
+		if(this.customBehavior.start) this.customBehavior.start();
 	}
 	update(){
 
@@ -48,6 +54,7 @@ class GameObject {
 		// tell children to update:
 		this.transform.children.forEach(c => c.gameObject.update());
 
+		if(this.customBehavior.update) this.customBehavior.update();
 	}
 	draw(){
 
@@ -65,6 +72,8 @@ class GameObject {
 		// tell children to draw:
 		this.transform.children.forEach(c => c.gameObject.draw());
 
+		if(this.customBehavior.draw) this.customBehavior.draw();
+		
 		//Matrix.pop();
 	}
 	addComponent(c){

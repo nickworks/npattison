@@ -6,13 +6,28 @@ class Particle {
 		this.dead=false;
 		this.age=0;
 		this.lifespan=1;
+		this.speed = 1;
+		this.vel=Maths.randDir(1);
+		this.mass=100;
 	}
 	update(){
 		this.age+=game.time.dt;
 		if(this.age>=this.lifespan)this.die();
+
+
+		const accel = (40000 / this.mass);
+		this.speed += accel * game.time.dt;
+
+		this.position.x += this.vel.x * this.speed * game.time.dt;
+		this.position.y += this.vel.y * this.speed * game.time.dt;
+
 	}
 	draw(img){
-		gfx.drawImage(this.img, this.position.x, this.position.y);
+		gfx.drawImage(img, this.position.x, this.position.y);
+	}
+	drawPt(){
+		gfx.fillStyle = "#000";
+		gfx.fillCircle(this.position.x, this.position.y, 2);
 	}
 	die(){
 		this.dead=true;
@@ -27,7 +42,7 @@ class RenderParticles extends GameComponent {
 		this.countdown=0;
 		this.img=new Image();
 		this.img.addEventListener("load", e=>{
-
+			console.log("image loaded");
 		});
 		this.load(url);
 	}
@@ -46,7 +61,7 @@ class RenderParticles extends GameComponent {
 		}
 	}
 	draw(){
-		this.particles.forEach(p=>p.draw(this.img));
+		this.particles.forEach(p=>p.drawPt());
 	}
 	spawn(){
 		const p = new this.particleType();

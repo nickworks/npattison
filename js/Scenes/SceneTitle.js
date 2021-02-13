@@ -3,8 +3,12 @@ class SceneTitle extends Scene {
         
         super();
 
-        const tf = Factory.TextField("Hello world!",vec2(100,100),vec2(0,0),{size:30,align:"center",valign:"middle"});
-        this.objs.add(tf);
+        this.objs.add(Factory.TextField("Hello world!",vec2(100,100),vec2(0,0),{size:30,align:"center",valign:"middle"}));
+
+
+        this.p = Factory.Particles(Data.lorem.img);
+        
+        this.objs.add(this.p);
 
         this.delayUntilSpawnMountain = 0;
 
@@ -19,6 +23,9 @@ class SceneTitle extends Scene {
         this.delayUntilSpawnMountain -= game.time.dt;
         if(this.delayUntilSpawnMountain <= 0) this.makeNextRange();
 
+        
+        this.p.transform.position.x = game.view.size.w/2;
+        this.p.transform.position.y = (game.view.size.h - 400)/2;
 
         this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
         this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;

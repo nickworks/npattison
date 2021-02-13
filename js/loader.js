@@ -47,6 +47,7 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         'js/Core/Input/keyboard.js',
 
         'js/Factories/Factory.js',
+        'js/Factories/Data.js',
 
         'js/Scenes/Scene.js',
         'js/Scenes/SceneTitle.js',

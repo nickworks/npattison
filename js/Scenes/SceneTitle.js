@@ -25,7 +25,7 @@ class SceneTitle extends Scene {
 
         
         this.p.transform.position.x = game.view.size.w/2;
-        this.p.transform.position.y = (game.view.size.h - 400)/2;
+        this.p.transform.position.y = (game.view.size.h - 700);
 
         this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
         this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;

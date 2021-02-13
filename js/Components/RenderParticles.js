@@ -1,22 +1,34 @@
 class Particle {
 	constructor(){
-		this.position=vec2(0,0);
+
+		const w = game.view.size.w/2;
+
+		this.position=vec2(Maths.rand(-w,w),Maths.rand(-200, 100));
 		this.scale=vec2(1,1);
 		this.angle=0;
 		this.dead=false;
 		this.age=0;
-		this.lifespan=1;
+		this.lifespan=3;
 		this.speed = 1;
-		this.vel=Maths.randDir(1);
-		this.mass=100;
+		this.vel=vec2(0,0);//Maths.randDir(1);
+		this.mass=10000;
+		
 	}
 	update(){
 		this.age+=game.time.dt;
 		if(this.age>=this.lifespan)this.die();
 
 
-		const accel = (40000 / this.mass);
+		this.mass *= .95;
+		const accel = (1000 / this.mass);
 		this.speed += accel * game.time.dt;
+
+		if(this.position.x < 0) this.vel.x -= 5 * game.time.dt;
+		if(this.position.x > 0) this.vel.x += 5 * game.time.dt;
+
+		if(this.position.y < 0) this.vel.y -= 2 * game.time.dt;
+		if(this.position.y > 0) this.vel.y += 2 * game.time.dt;
+
 
 		this.position.x += this.vel.x * this.speed * game.time.dt;
 		this.position.y += this.vel.y * this.speed * game.time.dt;
@@ -26,8 +38,8 @@ class Particle {
 		gfx.drawImage(img, this.position.x, this.position.y);
 	}
 	drawPt(){
-		gfx.fillStyle = "#000";
-		gfx.fillCircle(this.position.x, this.position.y, 2);
+		gfx.fillStyle = Color.HSV(200,50+this.speed,25 + this.speed * 1);
+		gfx.fillCircle(this.position.x, this.position.y, 2 + (this.speed * this.speed) / 300);
 	}
 	die(){
 		this.dead=true;
@@ -65,6 +77,6 @@ class RenderParticles extends GameComponent {
 	}
 	spawn(){
 		const p = new this.particleType();
-		this.particles.push(p);
+		this.particles.unshift(p);
 	}
 }

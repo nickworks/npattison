@@ -42,6 +42,7 @@ class Transform extends GameComponent {
 
 				// remove from scene:
 				this._parent.objs.remove(this);
+				// TODO: call Gameobject.Destroy()?
 
 			}
 		}
@@ -57,6 +58,14 @@ class Transform extends GameComponent {
 			}
 		}
 	}
+	drawDebug(){
+		gfx.fillStyle="#000";
+		gfx.fillCircle(0,0,5);
+		gfx.fillStyle="#FFF";
+		gfx.fillCircle(0,0,3);
+		this.rect.draw();
+		gfx.fillText("size: "+this.rect.w+"x"+this.rect.h, 3,-3);
+	}
 	calcMatrices(){
 
 		const m1 = new Matrix(); // parent-to-local
@@ -65,12 +74,11 @@ class Transform extends GameComponent {
 		let p = {x:0,y:0}; // % position in parent rect
 
 		// find anchor position in parent rect:
-		if(this._parent){
-			let rect = null;
-			if(this._parent.objs) rect = game.view.size;
-			if(this._parent.children) rect = this._parent.rect;
-			if(rect) p = rect.getPositionOfAnchor(this.anchor);
-		}
+		let rect = null;
+		if(this._parent == null) rect = game.view.size; // if _parent is the scene, set `rect` to the screen size
+		else if(this._parent.children) rect = this._parent.rect; // if _parent is some Transform, set `rect` to the parent's `rect`
+		if(rect) p = rect.getPositionOfAnchor(this.anchor); // if rect exists, find the position in the rect
+
 		m1.translate(p.x, p.y);
 		m1.translate(this.position.x, this.position.y);
         m1.rotate(this.angle);

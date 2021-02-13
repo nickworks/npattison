@@ -3,32 +3,37 @@ class SceneTitle extends Scene {
         
         super();
 
-        this.objs.add(Factory.TextField("Hello world!",vec2(100,100),vec2(0,0),{size:30,align:"center",valign:"middle"}));
-
-
-        this.p = Factory.Particles(Data.lorem.img);
+        this.panel = Factory.Empty(vec2(20,-20),vec2(0,1));
+        this.panel.transform.rect.w=200;
+        this.panel.transform.rect.h=-50;
+        
+        this.objs.add(this.panel);
+        
+        var hello = Factory.TextField("Hello world!",vec2(0,-50),vec2(0,0),{size:30,align:"center",valign:"middle"})
+        
+        hello.transform.parent = this.panel.transform;
+        
+        this.p = Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1));
         
         this.objs.add(this.p);
-
+        
         this.delayUntilSpawnMountain = 0;
-
-        this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
-        this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;
-
-
+        
+        //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
+        //this.cam.goals.y = this.cam.vals.y = 0;//game.view.size.h/2;// + Math.sin(game.time.now) * 100;
+        
+        
         this.color=Color.HSV(200,50,25);
+
     }
     update(){
 
         this.delayUntilSpawnMountain -= game.time.dt;
         if(this.delayUntilSpawnMountain <= 0) this.makeNextRange();
 
-        
-        this.p.transform.position.x = game.view.size.w/2;
-        this.p.transform.position.y = (game.view.size.h - 700);
 
-        this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
-        this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;
+        //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
+        //this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;
 
         super.update();
     }
@@ -36,7 +41,7 @@ class SceneTitle extends Scene {
         
         this.delayUntilSpawnMountain = Maths.rand(.5,1);
 
-        const obj = Factory.Empty(vec2(0,game.view.size.h-100),vec2(0,0));
+        const obj = Factory.Empty(vec2(0,0),vec2(.5,1));
         obj.addComponent( new MountainRange() );
 
         this.objs.addAtBack(obj);

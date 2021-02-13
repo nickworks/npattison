@@ -31,7 +31,7 @@ class MountainRange extends RenderShape {
         this.vel += 50 * dt;
 
         
-        this.transform.position.x = game.view.size.w/2;
+        this.transform.position.x = 0;
         this.transform.position.y += this.vel * dt;
         
         this.transform.scale.x += .2 * dt; 

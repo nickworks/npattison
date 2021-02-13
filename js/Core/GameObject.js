@@ -60,9 +60,11 @@ class GameObject {
 
     	//Matrix.push(this.transform.matrix.parentToLocal);
 
-		if(this.drawable){
-    		this.transform.matrix.localToWorld.apply();
-
+		
+		if(this.drawable || Game.DEVMODE){
+			this.transform.matrix.localToWorld.apply();
+			if(Game.DEVMODE) this.transform.drawDebug();
+			
 	        // draw components:
 			this.components.forEach(c => {
 				if(c.draw)c.draw()

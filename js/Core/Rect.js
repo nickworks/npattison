@@ -14,10 +14,10 @@ class Rect {
         return new Rect(x,y,w,h);
     }
     constructor(x,y,w,h){
-        this.x=x||0;
-        this.y=y||0;
-        this.w=w||25;
-        this.h=h||25;
+        this.x=x;
+        this.y=y;
+        this.w=w;
+        this.h=h;
         this.vx=0;
         this.vy=0;
         this.prev={};

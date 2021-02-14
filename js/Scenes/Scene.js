@@ -94,9 +94,9 @@ class Scene {
     }
 	update(){
         
+        if(this.guis.modals.length == 0){ // if no modals:
 
-        if(this.guis.modals.length == 0){
-            // update all objects
+            // update all objects:
             this.objs.all.forEach(o => o.update());
 
             this.doCollisionDetection();
@@ -104,17 +104,20 @@ class Scene {
             // remove all objects marked as "DEAD"
             this.objs.cleanup();
 
-
             // update particles:
             this.reverseIterate(this.particles, (o, i) =>{
                 o.update();
                 if(o.dead) this.particles.splice(i,1);
             });
+
+            // update overlays:
             this.reverseIterate(this.guis.overlays, (o, i)=>{
                 o.update();
                 if(o.dead) this.guis.overlays.splice(i,1);
             });
-        } else {
+
+        } else { // if modals:
+
             // UPDATE MODALS:
             this.reverseIterate(this.guis.modals, (o, i)=>{
                 o.update();
@@ -122,10 +125,10 @@ class Scene {
             });
         }
 
-        // update camera
+        // update camera:
         this.cam.update();
         
-        return false;
+        return false; // what does this do?
     }
     reverseIterate(arr, f){
         for(var i = arr.length - 1; i >= 0; i--){

@@ -12,9 +12,10 @@ class SceneTitle extends Scene {
         var hello = Factory.TextField("Hello world!",vec2(0,-20),vec2(0,0), Font.big);
         hello.transform.parent = this.panel.transform;
         
-        this.p = Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1));
-        this.objs.add(this.p);
+        this.objs.add(Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1)));
         
+        this.objs.add(Factory.RoundRect(10, "rgba(0,0,0,.9)", vec2(-120,20), vec2(1,0), vec2(100,50)));
+
         this.delayUntilSpawnMountain = 0;
         
         //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;

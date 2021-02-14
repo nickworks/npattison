@@ -22,6 +22,14 @@ const Factory = {
 		obj.addComponent( new RenderShape(pts) );
 		return obj;
 	},
+	RoundRect(r=5,c="#CCC",p=vec2(0,0),o=vec2(0,0),s=vec2(100,50),customBehavior={}){
+		const obj = this.Empty(p,o,customBehavior);
+		obj.transform.rect.w = s.x;
+		obj.transform.rect.h = s.y;
+
+		obj.addComponent( new RoundedRect(r,c) );
+		return obj;
+	},
 	Particles(url="",p=vec2(0,0),o=vec2(0,0),customBehavior={}){
 		const obj = this.Empty(p,o,customBehavior);
 		obj.addComponent( new RenderParticles(url) );

@@ -14,7 +14,11 @@ class SceneTitle extends Scene {
         
         this.objs.add(Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1)));
         
-        this.objs.add(Factory.RoundRect(10, "rgba(0,0,0,.9)", vec2(-120,20), vec2(1,0), vec2(100,50)));
+        var rr1 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
+        var rr2 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
+        var rr3 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
+
+        this.objs.add(Factory.Split([rr1, rr2, rr3]));
 
         this.delayUntilSpawnMountain = 0;
         

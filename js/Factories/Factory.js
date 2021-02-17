@@ -35,5 +35,9 @@ const Factory = {
 		obj.addComponent( new RenderParticles(url) );
 		return obj;
 	},
-
+	Split(children=[],p=vec2(0,0),o=vec2(0,0),customBehavior={}){
+		const obj = this.Empty(p,o,customBehavior);
+		obj.addComponent( new SplitPanel(children) );
+		return obj;
+	},
 };

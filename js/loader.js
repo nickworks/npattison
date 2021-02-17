@@ -32,6 +32,7 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         'js/Components/RenderText.js',
         'js/Components/RenderParticles.js',
         'js/Components/RoundedRect.js',
+        'js/Components/SplitPanel.js',
         'js/Components/Transform.js',
         'js/Core/GameObject.js',
 

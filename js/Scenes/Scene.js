@@ -137,7 +137,7 @@ class Scene {
     }
     doResize(w,h){
         this.objs.all.forEach(o=>{
-            o.transform._dirty = true;
+            o.transform.dirty();
         });
     }
     doCollisionDetection(){

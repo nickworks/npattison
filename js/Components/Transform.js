@@ -22,54 +22,58 @@ class Transform extends GameComponent {
 			worldToLocal:null,
 		};
 	}
+	dirty(){
+		this._dirty = true;
+		this.children.forEach(t => t.dirty());
+	}
 	get position(){
 		return this._position;
 	}
 	set position(p){
 		this._position = p;
-		this._dirty = true;
+		this.dirty();
 	}
 	get x(){
 		return this._position.x;
 	}
 	set x(x){
 		this._position.x = x;
-		this._dirty = true;
+		this.dirty();
 	}
 	get y(){
 		return this._position.y;
 	}
 	set y(y){
 		this._position.y = y;
-		this._dirty = true;
+		this.dirty();
 	}
 	get scale(){
 		return this._scale;
 	}
 	set scale(s){
 		this._scale = s;
-		this._dirty = true;
+		this.dirty();
 	}
 	get sx(){
 		return this._scale.x;
 	}
 	set sx(x){
 		this._scale.x = x;
-		this._dirty = true;
+		this.dirty();
 	}
 	get sy(){
 		return this._scale.y;
 	}
 	set sy(y){
 		this._scale.y = y;
-		this._dirty = true;
+		this.dirty();
 	}
 	get angle(){
 		return this._angle;
 	}
 	set angle(a){
 		this._angle = a;
-		this._dirty = true;
+		this.dirty();
 	}
 	get root() {
 		let p = this.parent;
@@ -100,6 +104,7 @@ class Transform extends GameComponent {
 
 		// TODO: verify `p` is a Transform OR null...
 		this._parent = p;
+		this._dirty = true;
 
 		if(p){
 			if(p.children){ // if new parent is a transform
@@ -153,7 +158,10 @@ class Transform extends GameComponent {
         this.matrix.localToWorld = (this.parent&&this.parent.matrix) ? Matrix.mult(this.parent.matrix.localToWorld, m1) : m1;
         this.matrix.worldToLocal = (this.parent&&this.parent.matrix) ? Matrix.mult(m2, this.parent.matrix.worldToLocal) : m2;
 		
+		// tell the other components to refresh layouts
 		this.gameObject.layout();
+
+
 	}
 	worldToLocal(p){
 		return this.matrix.worldToLocal.vec(p);

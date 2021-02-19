@@ -63,7 +63,7 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
 
     loadThen(files,()=>{
 
-        Game.DEVMODE=false;
+        Game.DEVMODE=true;
 
         if(Game.DEVMODE) console.log("------ ALL FILES LOADED ------");
         if(Game.DEVMODE) console.log("launching game...");

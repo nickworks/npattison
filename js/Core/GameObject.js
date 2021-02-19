@@ -48,8 +48,8 @@ class GameObject {
 				if(c.update)c.update()
 			});
 		}
-		// TODO: cache these / create dirty flag?
-		this.transform.calcMatrices();
+		
+		this.transform.calcMatrices(); // <-- recalc matrices if necessary
 
 		// tell children to update:
 		this.transform.children.forEach(c => c.gameObject.update());
@@ -57,10 +57,19 @@ class GameObject {
 		if(this.customBehavior.update) this.customBehavior.update();
 	}
 	layout(){
+		
+		// this function is triggered by Transform.calcMatrices(), which is triggered by _dirty flag
+
+		// call layout() in components:
 		this.components.forEach(c => {
 			if(c.layout)c.layout()
 		});
-		// TODO: call children?
+		
+		// it is not necessary to call layout() in children.
+		// the children's Transform.calcMatrices() will call their layout().
+
+		// call layout() in customBehavior:
+		if(this.customBehavior.layout) this.customBehavior.layout();
 	}
 	draw(){
 

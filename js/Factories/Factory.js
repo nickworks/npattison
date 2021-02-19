@@ -20,7 +20,7 @@ const Factory = {
 		obj.addComponent( new RenderShape(pts) );
 		return obj;
 	},
-	RoundRect(r=5,c="#CCC",p=vec2(),o=vec2(),s=vec2(100,50),customBehavior={}){
+	RoundRect(r=5,c="rgba(0,0,0,.5)",p=vec2(),o=vec2(),s=vec2(100,50),customBehavior={}){
 		const obj = this.Empty(p,o,customBehavior);
 		obj.transform.rect.w = s.x;
 		obj.transform.rect.h = s.y;
@@ -33,9 +33,9 @@ const Factory = {
 		obj.addComponent( new RenderParticles(url) );
 		return obj;
 	},
-	Split(children=[],p=vec2(),o=vec2(),customBehavior={}){
+	Split(children=[],vert=false,p=vec2(),o=vec2(),customBehavior={}){
 		const obj = this.Empty(p,o,customBehavior);
-		obj.addComponent( new SplitPanel(children) );
+		obj.addComponent( new SplitPanel(children, vert) );
 		return obj;
 	},
 };

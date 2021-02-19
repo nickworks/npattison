@@ -154,7 +154,8 @@ class Rect {
         return "{"+this.x+", "+this.y+", "+this.w+", "+this.h+"}";
     }
     draw(){
-        gfx.fillRect(this.x,this.y,this.w,this.h);
+        gfx.strokeStyle = "#FFF";
+        gfx.strokeRect(this.x,this.y,this.w,this.h);
     }
     drawStroke(color="#F00",w=3){
         gfx.beginPath();

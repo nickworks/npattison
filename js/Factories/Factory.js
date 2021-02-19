@@ -20,7 +20,7 @@ const Factory = {
 		obj.addComponent( new RenderShape(pts) );
 		return obj;
 	},
-	RoundRect(r=5,c="rgba(0,0,0,.5)",p=vec2(),o=vec2(),s=vec2(100,50),customBehavior={}){
+	RoundRect(r=10,c="rgba(0,0,0,.5)",p=vec2(),o=vec2(),s=vec2(100,50),customBehavior={}){
 		const obj = this.Empty(p,o,customBehavior);
 		obj.transform.rect.w = s.x;
 		obj.transform.rect.h = s.y;

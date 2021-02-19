@@ -1,11 +1,12 @@
 class SplitPanel extends GameComponent {
-    constructor(children, vert=false){
+    constructor(children, vert=false, padding=10, margin=0){
         super();
         this.childrenToAdd = children;
         this.vert = !!vert;
+        this.padding = Number(padding);
+        this.margin = Number(margin);
     }
     start(){
-        this.padding = 10;
         this.childrenToAdd.forEach(c=>{
              c.transform.parent = this.transform;
         });
@@ -15,30 +16,39 @@ class SplitPanel extends GameComponent {
     layout(){
 
         if(!this.transform.parent) this.transform.rect = game.view.size;
-
-        const amt = this.transform.children.length;
         
-        if(this.vert) {
-            const  w = (this.transform.rect.w - this.padding * amt * 1.5) / amt;
-            const  h = (this.transform.rect.h - this.padding * 2);
-            this.positionChildren(w, h, w + this.padding, 0);
+        const  w = this.getSizeWidth();
+        const  h = this.getSizeHeight();
 
+        if(this.vert) {
+            this.positionChildren(w, h, w + this.padding, 0);
         } else {
-            const w = (this.transform.rect.w - this.padding * 2);
-            const h = (this.transform.rect.h - this.padding * amt * 1.5) / amt;
             this.positionChildren(w, h, 0, h + this.padding);
         }
 
     }
+    getSizeWidth(){
+        const fullsize = this.transform.rect.w;
+        let amt = this.transform.children.length;
+        if(!this.vert) amt = 1;
+        const emptySpace = this.margin * 2 + this.padding * (amt - 1);
+        return (fullsize - emptySpace) / amt;
+    }
+    getSizeHeight(){
+        const fullsize = this.transform.rect.h;
+        let amt = this.transform.children.length;
+        if(this.vert) amt = 1;
+        const emptySpace = this.margin * 2 + this.padding * (amt - 1);
+        return (fullsize - emptySpace) / amt;
+    }
     positionChildren(w,h,dx,dy){
         let i = 0;
         this.transform.children.forEach(t => {
-            t.rect.y = i * dy + this.padding;
+            t.rect.y = i * dy + this.margin;
             t.rect.h = h;
-            t.rect.x = i * dx + this.padding;
+            t.rect.x = i * dx + this.margin;
             t.rect.w = w;
             i++;
-            //t.gameObject.layout();
         });
     }
 }

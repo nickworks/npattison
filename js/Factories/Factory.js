@@ -33,9 +33,9 @@ const Factory = {
 		obj.addComponent( new RenderParticles(url) );
 		return obj;
 	},
-	Split(children=[],vert=false,p=vec2(),o=vec2(),customBehavior={}){
-		const obj = this.Empty(p,o,customBehavior);
-		obj.addComponent( new SplitPanel(children, vert) );
+	Split(children=[],vert=false,padding=10,margin=0){
+		const obj = this.Empty();
+		obj.addComponent( new SplitPanel(children, vert, padding, margin) );
 		return obj;
 	},
 };

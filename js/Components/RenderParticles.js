@@ -4,13 +4,13 @@ class Particle {
 		const w = game.view.size.w/2;
 
 		this.position=vec2(Maths.rand(-w,w),Maths.rand(-200, 100));
-		this.scale=vec2(1,1);
+		this.scale=vec2(1);
 		this.angle=0;
 		this.dead=false;
 		this.age=0;
 		this.lifespan=3;
 		this.speed = 1;
-		this.vel=vec2(0,0);//Maths.randDir(1);
+		this.vel=vec2();//Maths.randDir(1);
 		this.mass=10000;
 		
 	}

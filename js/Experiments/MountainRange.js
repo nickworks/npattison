@@ -31,8 +31,8 @@ class MountainRange extends RenderShape {
         this.vel += 50 * dt;
 
         
-        this.transform.position.x = 0;
-        this.transform.position.y += this.vel * dt;
+        this.transform.x = 0;
+        this.transform.y += this.vel * dt;
         
         this.transform.scale.x += .2 * dt; 
         this.transform.scale.y += .5 * dt;

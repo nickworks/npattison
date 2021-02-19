@@ -9,7 +9,7 @@ class SceneTitle extends Scene {
         
         this.objs.add(this.panel);
         
-        var hello = Factory.TextField("Hello world!",vec2(0,-20),vec2(0,0), Font.big);
+        var hello = Factory.TextField("Hello world!",vec2(0,-20),vec2(), Font.big);
         hello.transform.parent = this.panel.transform;
         
         this.objs.add(Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1)));
@@ -44,7 +44,7 @@ class SceneTitle extends Scene {
         
         this.delayUntilSpawnMountain = Maths.rand(.5,1);
 
-        const obj = Factory.Empty(vec2(0,0),vec2(.5,1));
+        const obj = Factory.Empty(vec2(),vec2(.5,1));
         obj.addComponent( new MountainRange() );
 
         this.objs.addAtBack(obj);

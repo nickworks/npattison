@@ -48,13 +48,19 @@ class GameObject {
 				if(c.update)c.update()
 			});
 		}
-
+		// TODO: cache these / create dirty flag?
 		this.transform.calcMatrices();
 
 		// tell children to update:
 		this.transform.children.forEach(c => c.gameObject.update());
 
 		if(this.customBehavior.update) this.customBehavior.update();
+	}
+	layout(){
+		this.components.forEach(c => {
+			if(c.layout)c.layout()
+		});
+		// TODO: call children?
 	}
 	draw(){
 

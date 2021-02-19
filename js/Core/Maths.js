@@ -1,4 +1,8 @@
-const vec2=function(x,y){
+const vec2=function(x=0,y=undefined){
+
+	x = Number(x);
+	y = (y === undefined) ? x : Number(y);
+
 	return {x:x,y:y};
 };
 

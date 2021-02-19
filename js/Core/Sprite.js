@@ -10,7 +10,7 @@ class Sprite {
         this.x = 0;
         this.y = 0;
         this.angle = 0;
-        this.scale = vec2(1,1);
+        this.scale = vec2(1);
         this.anchor = {x:0, y:0};
     }
     draw (){

@@ -63,15 +63,12 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
 
     loadThen(files,()=>{
 
-        Game.DEVMODE=false;
+        Game.DEVMODE=true;
 
         if(Game.DEVMODE) console.log("------ ALL FILES LOADED ------");
         if(Game.DEVMODE) console.log("launching game...");
         
         window.scene=null;
-        window.player=null;
-        window.cam=null;
-        window.obj=()=>{};
         window.game=new Game();
         window.game.start("myCanvas");
 

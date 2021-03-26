@@ -118,8 +118,6 @@ class Game {
     }
     globals(){
         window.scene=this.scene;
-        window.obj = (i) => {return scene.objs.get(i);};
-        window.player=(this.scene==undefined)?null:this.scene.player;
         window.game=this;
         window.gfx=this.view.gfx;
     }

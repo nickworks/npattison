@@ -6,7 +6,6 @@ class RoundedRect extends GameComponent {
 
     constructor(radius = 10, color="#CCE"){
         super();
-
         this.radius=radius;
         this.color=color;
         this.corners={
@@ -15,6 +14,10 @@ class RoundedRect extends GameComponent {
             br: RoundedRect.ROUND,
             bl: RoundedRect.ROUND,
         };
+    }
+    
+    touch(){
+        this.color = "#fff";
     }
     draw(){
 

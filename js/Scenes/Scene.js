@@ -1,134 +1,81 @@
-class Scene {
+class Scene extends GameObject {
 	constructor(){
         
+        super();
         // this object contains all of the objects in the scene
         // objects are sorted into categories (for collision detection, etc)
-		this.objs={
-			get(i){
-				return this.all[i]||{};
-			},
-			getUnderMouse(){
-				let obj = null;
-				this.all.forEach(o=>{
-					if(o.rect.mouseOver())obj=o; 
-				});
-				return obj;
-			},
-			clear(){
-				this.all =[];
-			},
-            add(obj){
-                this.all.push(obj);
-                switch(obj.constructor.name){
-                    case "some class":
-                }
-            },
-            addAt(obj, i){
-                this.all.splice(i,0,obj);
-            },
-            addAtBack(obj){
-                this.all.unshift(obj);
-            },
-            remove(obj){
-                this.removeFrom(obj, this.all);
-            },
-            removeFrom(obj, arr){
-                const i = arr.indexOf(obj);
-                if(i != -1) arr.splice(i, 1); 
-            },
-            indexOf(obj){
-            	return this.all.indexOf(obj);
-            },
-            cleanup(){
-                // remove dead objects
-                for(let i=this.all.length-1; i>= 0; i--){
-                    const obj = this.all[i];
-                    if(obj.dead) this.remove(obj);
-                }
-            },
-            allByType(){
-                const sorted={};
-                this.all.forEach(i=>{
-                    const n = i.constructor.name;
-                    if(!Array.isArray(sorted[n])) sorted[n] = [];
-                    sorted[n].push(i);
-                });
-                return sorted;
-            }
-        };
+		this.deadobjs=[];
+
         this.color="#888";
-        this.objs.clear();
-        this.guis={
-            overlays:[],
-            modals:[],
-        };
-        this.particles=[];
-		
+        
+        //this.objs.clear(); // init the obj-list
+        
         this.cam=new Camera();
         this.gravity=1200;
 	}
-    add(obj){
-        obj.transform.parent = this;
-        this.objs.add(obj);
+    start(){
+        this.transform.anchor = Anchors.Stretch;
+        this.transform.rect=game.view.size;
+    }
+    instantiate(p=vec2(),o=Anchors.TopLeft,parent=undefined,customBehavior={}){
+
+        const obj = new GameObject(new Transform(p, o), customBehavior);
+
+        if(typeof parent ==="object" && parent.constructor.name ==="Transform"){
+            obj.transform.parent = parent;
+        } else {
+            obj.transform.parent = this.transform;
+            //this.objs.add(obj);
+        }
         return obj;
     }
-    pause(){
-        if(this.guis.editor) return;
-        //this.guis.pause = new Pause();
-    }
-    unpause(){
-        this.guis.pause = null;
+    destroy(gameobject){
+        this.deadobjs.dead.add(gameobject);
     }
 	draw(){
         game.view.fill(this.color);
 
-        this.cam.drawStart();
-        this.objs.all.forEach(o => o.draw());
-        this.particles.forEach(p => p.draw());
+        this.cam.drawStart(); // push
 
-        this.cam.drawEnd();
+        //this.objs.all.forEach(o => o.draw());
+        super.draw();
 
-        // GUI OVERLAYS:
-        this.guis.overlays.forEach(m => m.draw());
-        this.guis.modals.forEach(m => m.draw());
+        this.cam.drawEnd(); // pop
     }
 	update(){
         
-        if(this.guis.modals.length == 0){ // if no modals:
+        super.update();
+        /*
+        this.objs.touchables.forEach(o => {
+            if(o.touch && mouse.onDown) o.touch();
+        });
+        */
+        // update all objects:
+        // this.objs.all.forEach(o => o.update());
 
-            // update all objects:
-            this.objs.all.forEach(o => o.update());
+        this.doCollisionDetection();
 
-            this.doCollisionDetection();
-
-            // remove all objects marked as "DEAD"
-            this.objs.cleanup();
-
-            // update particles:
-            this.reverseIterate(this.particles, (o, i) =>{
-                o.update();
-                if(o.dead) this.particles.splice(i,1);
-            });
-
-            // update overlays:
-            this.reverseIterate(this.guis.overlays, (o, i)=>{
-                o.update();
-                if(o.dead) this.guis.overlays.splice(i,1);
-            });
-
-        } else { // if modals:
-
-            // UPDATE MODALS:
-            this.reverseIterate(this.guis.modals, (o, i)=>{
-                o.update();
-                if(o.dead) this.guis.modals.splice(i,1);
-            });
-        }
+        // remove all Destroyed objects:
+        this.cleanup();
 
         // update camera:
         this.cam.update();
         
         return false; // what does this do?
+    }
+    cleanup(){
+        // remove dead objects
+        this.deadobjs.forEach(o=>{
+
+            if(o.transform.parent){
+                // if parent, remove from parent
+                o.transform.parent = null;
+            } else {
+                // if no parent, remove from scene
+                this.removeFrom(o, this.all);
+            }
+        });
+        this.deadobjs = [];
     }
     reverseIterate(arr, f){
         for(var i = arr.length - 1; i >= 0; i--){
@@ -136,9 +83,8 @@ class Scene {
         }
     }
     doResize(w,h){
-        this.objs.all.forEach(o=>{
-            o.transform.dirty();
-        });
+        this.transform.dirty();
+        //this.transform.children.filter(o => o.layo)
     }
     doCollisionDetection(){
         // do collision detection:
@@ -149,16 +95,19 @@ class Scene {
     }
     modal(modal){
 
+        /*
     	const types = this.guis.modals.map(m => Object.getPrototypeOf(m));
     	const typeAlreadyExists = types.includes(Object.getPrototypeOf(modal));
 
     	if (typeAlreadyExists) return;
 
     	this.guis.modals.push(modal);
+        */
     }
     removeModal(modal){
-
+        /*
         var i = this.guis.modals.indexOf(modal);
         this.guis.modals.slice(i,1);
+        */
     }
 }

@@ -1,18 +1,24 @@
 class GameObject {
 
-	constructor(customBehavior={}){
-		this.components = [];
-		this.addComponent( new Transform() );
-
+	constructor(xform, customBehavior={}){
+		this.components = [];	
 		this.customBehavior = customBehavior;
-
+		
 		// cached values:
 		this._transform = null;
 		this._hasNeverTicked = true;
-
+		
 		// flags:
 		this.updateable = false;
 		this.drawable = false;
+		this.layoutable = false;
+		this.touchable = false;
+
+		if(typeof xform ==="object" && xform.constructor.name === "Transform") {
+			this.addComponent( xform );
+		} else {
+			this.addComponent( new Transform() );
+		}
 	}
 	get transform() {
 		if(!this._transform) this._transform = this.getComponent("Transform");
@@ -22,14 +28,7 @@ class GameObject {
 
 		if(this.customBehavior.destroy) this.customBehavior.destroy();
 
-		if(this.transform.parent){
-			// if parent, remove from parent
-			this.transform.parent = null;
-		} else {
-			// if no parent, remove from scene
-			scene.objs.remove(this);
-		}
-
+		scene.destroy(this);
 	}
 	start(){
 		this._hasNeverTicked = false;
@@ -49,10 +48,7 @@ class GameObject {
 			});
 		}
 		
-		this.transform.calcMatrices(); // <-- recalc matrices if necessary
-
-		// tell children to update:
-		this.transform.children.forEach(c => c.gameObject.update());
+		this.transform.update(); // <-- recalc matrices if necessary
 
 		if(this.customBehavior.update) this.customBehavior.update();
 	}
@@ -60,10 +56,12 @@ class GameObject {
 		
 		// this function is triggered by Transform.calcMatrices(), which is triggered by _dirty flag
 
-		// call layout() in components:
-		this.components.forEach(c => {
-			if(c.layout)c.layout()
-		});
+		if(this.layoutable){
+			// call layout() in components:
+			this.components.forEach(c => {
+				if(c.layout)c.layout()
+			});
+		}
 		
 		// it is not necessary to call layout() in children.
 		// the children's Transform.calcMatrices() will call their layout().
@@ -74,7 +72,6 @@ class GameObject {
 	draw(){
 
     	//Matrix.push(this.transform.matrix.parentToLocal);
-
 		
 		if(this.drawable || Game.DEVMODE){
 			this.transform.matrix.localToWorld.apply();
@@ -92,6 +89,11 @@ class GameObject {
 		if(this.customBehavior.draw) this.customBehavior.draw();
 		
 		//Matrix.pop();
+	}
+	with(c){
+		if(!Array.isArray(c)) c = [c];
+		c.forEach(comp => this.addComponent(comp));
+		return this;
 	}
 	addComponent(c){
 		this.components.push(c);
@@ -120,9 +122,13 @@ class GameObject {
 	scanComponents(){
 		this.updateable = false;
 		this.drawable = false;
+		this.layoutable = false;
+		this.touchable = false;
 		this.components.forEach(c => {
 			if(c.draw)this.drawable=true;
 			if(c.update)this.updateable=true;
+			if(c.layout)this.layoutable=true;
+			if(c.touch)this.touchable=true;
 		});
 	}
 }

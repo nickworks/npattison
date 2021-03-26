@@ -2,7 +2,7 @@ class SceneTitle extends Scene {
     constructor(){
         
         super();
-
+        /*
         this.panel = Factory.Empty(vec2(20,-20),vec2(0,1));
         this.panel.transform.rect.w=200;
         this.panel.transform.rect.h=50;
@@ -19,7 +19,25 @@ class SceneTitle extends Scene {
         var row3 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
 
         this.objs.add(Factory.Split([row1, row2, row3], false, 10, 10));
+        */
 
+       
+       var card = this.instantiate(vec2(), Anchors.Stretch).with( Factory.RoundRect(30, "rgba(0,0,0,0.5)"));
+       
+       card.transform._margins = Margins(50, 0, 0, 0);
+
+       this.instantiate(vec2(50, 50), Anchors.TopRight).with( Factory.TextField("Hello world?", Font.big) );
+        /*
+        var cards = [
+            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
+            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
+            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
+        ];
+
+        this.instantiate(vec2(0, 0), Anchors.Stretch).with(Factory.Split(cards, false, 10, 0));
+        */
+
+      
         this.delayUntilSpawnMountain = 0;
         
         //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
@@ -44,10 +62,9 @@ class SceneTitle extends Scene {
         
         this.delayUntilSpawnMountain = Maths.rand(.5,1);
 
-        const obj = Factory.Empty(vec2(),vec2(.5,1));
-        obj.addComponent( new MountainRange() );
-
-        this.objs.addAtBack(obj);
+        //const obj = Factory.Empty(vec2(),vec2(.5,1));
+        //obj.addComponent( new MountainRange() );
+        //this.objs.addAtBack(obj);
 
     }
 }

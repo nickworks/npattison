@@ -31,6 +31,14 @@ class Rect {
         let y = anchor.y*this.h+this.y;
         return {x:x,y:y};
     }
+    getChildRect(anchorMin, anchorMax){
+        return {
+            x:anchorMin.x*this.w + this.x,
+            y:anchorMax.y*this.h + this.y,
+            w:anchorMin.x*this.w + this.x,
+            h:anchorMax.x*this.h + this.y,
+        };
+    }
     merge(x,y,w,h){
 
         const max = this.max();

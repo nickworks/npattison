@@ -18,10 +18,7 @@ const mouse={
         });
         element.addEventListener("mousewheel",(e)=>{
             let scrollUp = (e.wheelDeltaY>0);
-            if(player&&player.pawn){
-                if(scrollUp)player.pawn.nextWeapon();
-                if(!scrollUp)player.pawn.prevWeapon();
-            }
+            
         })
         element.oncontextmenu = (e)=>{ return false; };
         document.addEventListener("mouseup",(e)=>{

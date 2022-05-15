@@ -41,19 +41,25 @@ class SplitPanel extends GameComponent {
     }
     positionChildren(w,h,dx,dy){
         let i = 0;
-        let amt = this.transform.children.length;
+        const amt = this.transform.children.length;
+        const pad_outer = this.padding;
+        const pad_inner = pad_outer / 2;
+
         this.transform.children.forEach(t => {
-            /*
-            t.rect.y = i * dy + this.margin;
-            t.rect.h = h;
-            t.rect.x = i * dx + this.margin;
-            t.rect.w = w;
-            */
-            t.anchor = {
-                min:vec2(i/amt,0),
-                max:vec2((i+1)/amt,1),
-            };
-            t._margins = Margins(this.padding, this.padding, this.padding, this.padding);
+            
+            const pad_before = i == 0 ? pad_outer : pad_inner;
+            const pad_after = i == amt - 1 ? pad_outer : pad_inner;
+
+            if(this.vert){
+                t._anchor = Anchors.Stretch(pad_before,pad_outer,pad_after,pad_outer);
+                t._anchor.anchorMin = vec2(0, i/amt);
+                t._anchor.anchorMax = vec2(1, (i+1)/amt);
+            } else {
+                t._anchor = Anchors.Stretch(pad_outer,pad_after,pad_outer,pad_before);
+                t._anchor.anchorMin = vec2(i/amt,0);
+                t._anchor.anchorMax = vec2((i+1)/amt,1);
+            }
+            
             i++;
         });
     }

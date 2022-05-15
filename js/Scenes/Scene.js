@@ -17,9 +17,10 @@ class Scene extends GameObject {
         this.transform.anchor = Anchors.Stretch;
         this.transform.rect=game.view.size;
     }
-    instantiate(p=vec2(),o=Anchors.TopLeft,parent=undefined,customBehavior={}){
+    /** Creates a new GameObject */
+    instantiate(p=vec2(),parent=undefined,customBehavior={}){
 
-        const obj = new GameObject(new Transform(p, o), customBehavior);
+        const obj = new GameObject(new Transform(p), customBehavior);
 
         if(typeof parent ==="object" && parent.constructor.name ==="Transform"){
             obj.transform.parent = parent;
@@ -29,6 +30,7 @@ class Scene extends GameObject {
         }
         return obj;
     }
+
     destroy(gameobject){
         this.deadobjs.dead.add(gameobject);
     }

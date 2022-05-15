@@ -1,44 +1,20 @@
-class Anchors {
-	static get TopLeft() {
-		return {
-			min:vec2(0),
-			max:vec2(0),
-		}; 
-	};
-	static get TopRight() {
-		return {
-			min:vec2(1,0),
-			max:vec2(1,0),
-		}; 
-	};
-	static get Stretch() {
-		return {
-			min:vec2(0),
-			max:vec2(1),
-		}; 
-	};
-}
-
-const Margins = (t=0,l=0,b=0,r=0)=>{
-	t = Number(t);
-	l = Number(l);
-	b = (b===undefined) ? t : Number(b);
-	r = (r===undefined) ? l : Number(r);
-	return {t:t,l:l,b:b,r:r};
-};
-
 class Transform extends GameComponent {
 
-	constructor(p=vec2(), a=Anchors.TopLeft){
+	constructor(p=vec2()){
 		super();
 
+		this._drawDebug = false;
 		this._dirty = true;
 
-		this._anchor=a; // percent position in parent
-		this._margins=Margins(p.x, p.y);
-
+		if(p.constructor.name == 'Anchors'){
+			this._anchor = p;
+		} else {
+			this._anchor = Anchors.TopLeft(p.x, p.y, 0, 0);
+		}
+		
 		this._angle = 0;
 		this._scale = vec2(1);
+		this._position = vec2(0);
 
 		this.rect = new Rect(0,0,0,0); // this canvas is used to position child GameObjects
 
@@ -63,25 +39,24 @@ class Transform extends GameComponent {
 		this.dirty();
 	}
 	get position(){
-		return {x:this.rect.x,y:this.rect.y};
+		return this._position;
 	}
 	set position(p){
-		this._margins.l = p.x;
-		this._margins.t = p.y;
+		this._position = p;
 		this.dirty();
 	}
 	get x(){
-		return this._margins.l;
+		return this._position.x;
 	}
 	set x(x){
-		this._margins.l = x;
+		this._position.x = x;
 		this.dirty();
 	}
 	get y(){
-		return this._margins.t;
+		return this._position.y;
 	}
 	set y(y){
-		this._margins.t = y;
+		this._position.y = y;
 		this.dirty();
 	}
 	get scale(){
@@ -136,14 +111,24 @@ class Transform extends GameComponent {
 
 		this.dirty();
 	}
-	drawDebug(){
-		gfx.fillStyle="#000";
-		gfx.fillCircle(0,0,5);
-		gfx.fillStyle="#FFF";
-		gfx.fillCircle(0,0,3);
-		this.rect.draw();
+	drawDebugInner(){
+		if(!this._drawDebug) return;
 		Font.basic.apply();
-		gfx.fillText("size: "+this.rect.w+"x"+this.rect.h, 3,-3);
+		gfx.fillStyle="#FFF";
+		gfx.fillText("size: "+this.rect.w+"x"+this.rect.h, this.pos.x + 5,this.pos.y - 3);
+		gfx.fillCircle(this.pos.x,this.pos.y,5);
+	}
+	drawDebugOuter(){
+		if(!this._drawDebug) return;
+		Font.basic.apply();
+
+		//gfx.fillStyle="#000";
+		//gfx.fillCircle(0,0,10);
+		//gfx.fillStyle="#FFF";
+		//gfx.fillCircle(0,0,8);
+
+		this.rect.draw();
+		this._anchor.draw();
 	}
 	update(){
 
@@ -158,44 +143,30 @@ class Transform extends GameComponent {
 
 		// TODO: reconcile _margins, position, anchor, and rect
 
-		// public set position
-		// public set _margins ??
-		// private set rect ??
-
-		// 1. use anchor to find the min / max corners of a... box?
-		// 2. add margins to box to find RECT?
-		// 3. what about set / get position?
-
-		// find anchor position in parent rect:
-		let rect = undefined;
-		let p1 = vec2(0);
-		let p2 = vec2(0);
 		if(this.parent) {
-			rect = this.parent.rect;
-			p1 = rect.getPositionOfAnchor(this.anchor.min); // if rect exists, find the position in the rect
-			p2 = rect.getPositionOfAnchor(this.anchor.max);
-			this.rect.x = p1.x;// + this._margins.l;
-			this.rect.y = p1.y;//+ this._margins.t;
-			this.rect.w = p2.x;// - this.rect.x - this._margins.r;
-			this.rect.h = p2.y;// - this.rect.y - this._margins.b;
+			this.rect = this._anchor.calcRectFromParent(this.parent.rect);
 		} else {
 			this.rect = game.view.size;
 		}
-			
+
+		this.pos = this.rect.getPositionOfAnchor(this._anchor.origin ?? vec2(0));
+
 		const m1 = new Matrix(); // parent-to-local
 		const m2 = new Matrix(); // local-to-parent
 
 		// build transform matrix:
-		//m1.translate(p1.x, p1.y);
-		m1.translate(this.x, this.y); // <-- wait... doesn't work w/ rects
+		//m1.translate(p1.x, p1.y); // <-- wait... doesn't work w/ rects
+		m1.translate(this.pos.x, this.pos.y);
 		m1.rotate(this._angle);
 		m1.scale(this._scale.x, this._scale.y);
+		m1.translate(-this.pos.x, -this.pos.y);
 
 		// build inverse matrix:
+		m2.translate(this.pos.x, this.pos.y);
 		m2.scale(1/this._scale.x, 1/this._scale.y);
 		m2.rotate(-this._angle);
-		m2.translate(-this.x, -this.y);
-		//m2.translate(-p1.x, -p1.y);
+		//m2.translate(-this.x, -this.y);
+		m2.translate(-this.pos.x, -this.pos.y);
 
 		this.matrix.parentToLocal = m1;
 		this.matrix.localToParent = m2;

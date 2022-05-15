@@ -23,20 +23,26 @@ class Rect {
         this.prev={};
         this.fix();
     }
-    getPositionOfAnchor(anchor){
+    getPositionOfAnchor(relPos){
         // given a percent-based position (an `anchor`),
         // this function will return a position within the rect
 
-        let x = anchor.x*this.w+this.x;
-        let y = anchor.y*this.h+this.y;
+        let x = relPos.x*this.w+this.x;
+        let y = relPos.y*this.h+this.y;
         return {x:x,y:y};
     }
     getChildRect(anchorMin, anchorMax){
+
+        const x = anchorMin.x*this.w + this.x;
+        const y = anchorMin.y*this.h + this.y;
+        const w = anchorMax.x*this.w + this.x - x;
+        const h = anchorMax.y*this.h + this.y - y;
+
         return {
-            x:anchorMin.x*this.w + this.x,
-            y:anchorMax.y*this.h + this.y,
-            w:anchorMin.x*this.w + this.x,
-            h:anchorMax.x*this.h + this.y,
+            x:x,
+            y:y,
+            w:w,
+            h:h,
         };
     }
     merge(x,y,w,h){

@@ -2,42 +2,26 @@ class SceneTitle extends Scene {
     constructor(){
         
         super();
-        /*
-        this.panel = Factory.Empty(vec2(20,-20),vec2(0,1));
-        this.panel.transform.rect.w=200;
-        this.panel.transform.rect.h=50;
-        
-        this.objs.add(this.panel);
-        
-        var hello = Factory.TextField("Hello world!",vec2(0,-20),vec2(), Font.big);
-        hello.transform.parent = this.panel.transform;
-        
-        this.objs.add(Factory.Particles(Data.lorem.img, vec2(0,-700), vec2(.5,1)));
-        
-        var row1 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
-        var row2 = Factory.Split([Factory.RoundRect(),Factory.RoundRect(),Factory.RoundRect()], true, 20, 0);
-        var row3 = Factory.RoundRect(10, "rgba(0,0,0,.5)");
-
-        this.objs.add(Factory.Split([row1, row2, row3], false, 10, 10));
-        */
-
        
-       var card = this.instantiate(vec2(), Anchors.Stretch).with( Factory.RoundRect(30, "rgba(0,0,0,0.5)"));
-       
-       card.transform._margins = Margins(50, 0, 0, 0);
+        const card1 = this.instantiate(Anchors.Stretch(20,20,20,20)).with( Factory.RoundRect(30, "rgba(0,0,0,0.5)"));
+        //this.card1.transform._drawDebug = true;
 
-       this.instantiate(vec2(50, 50), Anchors.TopRight).with( Factory.TextField("Hello world?", Font.big) );
-        /*
-        var cards = [
-            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
-            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
-            this.instantiate(vec2(), Anchors.Stretch).with(Factory.RoundRect(30, "rgba(0,0,0,0.5)")),
+        const cards = [
+            this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")),
+            this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")).with(Factory.TextField("Hello World", Font.Basic)),
+            this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")),
         ];
 
-        this.instantiate(vec2(0, 0), Anchors.Stretch).with(Factory.Split(cards, false, 10, 0));
-        */
+        this.cardSpin = cards[1];
+        this.cardSpin.transform._drawDebug = true;
 
-      
+        const card2 = this.instantiate(Anchors.Stretch().setOrigin(.5,1), card1.transform)
+            //.with( Factory.RoundRect(10, "rgba(0,0,0,.25)"))
+            .with( Factory.Split(cards, true, 10, 0));
+
+        //card2.transform._drawDebug = true;
+        card2.transform._anchor.setSize(100,100);
+
         this.delayUntilSpawnMountain = 0;
         
         //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
@@ -52,11 +36,13 @@ class SceneTitle extends Scene {
         this.delayUntilSpawnMountain -= game.time.dt;
         if(this.delayUntilSpawnMountain <= 0) this.makeNextRange();
 
-
+        this.cardSpin.transform._angle += .001;
+        this.cardSpin.transform._anchor.fixedWidth = 100;
         //this.cam.goals.x = this.cam.vals.x = game.view.size.w/2;
         //this.cam.goals.y = this.cam.vals.y = game.view.size.h/2;
 
         super.update();
+
     }
     makeNextRange(){
         

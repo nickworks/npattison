@@ -74,18 +74,18 @@ class GameObject {
     	//Matrix.push(this.transform.matrix.parentToLocal);
 		
 		if(this.drawable || Game.DEVMODE){
+			if(Game.DEVMODE) this.transform.drawDebugOuter();
 			this.transform.matrix.localToWorld.apply();
-			if(Game.DEVMODE) this.transform.drawDebug();
-			
 	        // draw components:
 			this.components.forEach(c => {
 				if(c.draw)c.draw()
 			});
+			if(Game.DEVMODE) this.transform.drawDebugInner();
 		}
-
+		
 		// tell children to draw:
 		this.transform.children.forEach(c => c.gameObject.draw());
-
+		
 		if(this.customBehavior.draw) this.customBehavior.draw();
 		
 		//Matrix.pop();

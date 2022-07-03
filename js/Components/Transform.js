@@ -25,6 +25,7 @@ class Transform extends GameComponent {
 			localToParent:null,
 			localToWorld:null,
 			worldToLocal:null,
+			draw:null,
 		};
 	}
 	dirty(){
@@ -148,7 +149,7 @@ class Transform extends GameComponent {
 		} else {
 			this.rect = game.view.size;
 		}
-
+		// this position is where we draw the origin
 		this.pos = this.rect.getPositionOfAnchor(this._anchor.origin ?? vec2(0));
 
 		const m1 = new Matrix(); // parent-to-local
@@ -159,10 +160,10 @@ class Transform extends GameComponent {
 		m1.translate(this.pos.x, this.pos.y);
 		m1.rotate(this._angle);
 		m1.scale(this._scale.x, this._scale.y);
-		m1.translate(-this.pos.x, -this.pos.y);
+		//m1.translate(-this.pos.x, -this.pos.y);
 
 		// build inverse matrix:
-		m2.translate(this.pos.x, this.pos.y);
+		//m2.translate(this.pos.x, this.pos.y);
 		m2.scale(1/this._scale.x, 1/this._scale.y);
 		m2.rotate(-this._angle);
 		//m2.translate(-this.x, -this.y);
@@ -173,6 +174,8 @@ class Transform extends GameComponent {
 
 		// multiply matrices by parents' matrices:
 		this.matrix.localToWorld = (this.parent&&this.parent.matrix) ? Matrix.mult(this.parent.matrix.localToWorld, m1) : m1;
+		this.matrix.draw = this.matrix.localToWorld;
+		this.matrix.draw.translate(-this.pos.x, -this.pos.y);
 		this.matrix.worldToLocal = (this.parent&&this.parent.matrix) ? Matrix.mult(m2, this.parent.matrix.worldToLocal) : m2;
 		
 		// tell the other components to refresh layouts

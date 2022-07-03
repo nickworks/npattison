@@ -75,7 +75,7 @@ class GameObject {
 		
 		if(this.drawable || Game.DEVMODE){
 			if(Game.DEVMODE) this.transform.drawDebugOuter();
-			this.transform.matrix.localToWorld.apply();
+			this.transform.matrix.draw.apply();
 	        // draw components:
 			this.components.forEach(c => {
 				if(c.draw)c.draw()

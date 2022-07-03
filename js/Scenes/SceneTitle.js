@@ -3,17 +3,20 @@ class SceneTitle extends Scene {
         
         super();
        
-        const card1 = this.instantiate(Anchors.Stretch(20,20,20,20)).with( Factory.RoundRect(30, "rgba(0,0,0,0.5)"));
-        //this.card1.transform._drawDebug = true;
+        const card1 = this.instantiate(Anchors.Stretch(20,20,20,20)).with( Factory.RoundRect(15, "rgba(0,0,0,0.5)"));
+        card1.transform._drawDebug = true;
 
         const cards = [
             this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")),
-            this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")).with(Factory.TextField("Hello World", Font.Basic)),
+            this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")),
             this.instantiate().with(Factory.RoundRect(10, "rgba(0,0,0,0.5)")),
         ];
 
         this.cardSpin = cards[1];
         this.cardSpin.transform._drawDebug = true;
+
+
+        this.instantiate(vec2(), this.cardSpin.transform).with(Factory.TextField("Hello World", Font.Big));
 
         const card2 = this.instantiate(Anchors.Stretch().setOrigin(.5,1), card1.transform)
             //.with( Factory.RoundRect(10, "rgba(0,0,0,.25)"))

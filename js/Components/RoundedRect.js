@@ -25,6 +25,10 @@ class RoundedRect extends GameComponent {
 
         const radius = this.radius;
         const r = this.transform.rect;
+        
+        // slide around based on origin:
+        r.x = -r.w * this.transform._anchor.origin.x;
+        r.y = -r.h * this.transform._anchor.origin.y;
 
         gfx.beginPath();
 

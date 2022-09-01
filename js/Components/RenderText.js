@@ -8,6 +8,6 @@ class RenderText extends GameComponent {
 	}
 	draw(){
         this.font.apply();
-        gfx.fillText(this.text,this.x,this.y);
+        gfx.fillText(this.text,0,0);
     }
 }

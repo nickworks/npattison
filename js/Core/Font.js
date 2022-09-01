@@ -2,7 +2,7 @@ class Font {
 
     static basic = new Font();
     static center = new Font({align:"center"});
-    static big = new Font({size:36});
+    static big = new Font({size:56,align:"center"});
 
     constructor(raw={}){
         this.size=raw.size||12;

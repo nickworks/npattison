@@ -71,24 +71,25 @@ class GameObject {
 	}
 	draw(){
 
-    	//Matrix.push(this.transform.matrix.parentToLocal);
+		this.transform.matrix.predraw.apply();
+
+		// draw rect, origin (purple), anchor
+		if(Game.DEVMODE) this.transform.drawDebugOuter();
 		
-		if(this.drawable || Game.DEVMODE){
-			if(Game.DEVMODE) this.transform.drawDebugOuter();
-			this.transform.matrix.draw.apply();
-	        // draw components:
+		this.transform.matrix.draw.apply();
+		if(this.drawable || Game.DEVMODE){	
+			// draw components:
 			this.components.forEach(c => {
 				if(c.draw)c.draw()
 			});
-			if(Game.DEVMODE) this.transform.drawDebugInner();
+			//if(Game.DEVMODE) this.transform.drawDebugInner();
 		}
 		
 		// tell children to draw:
 		this.transform.children.forEach(c => c.gameObject.draw());
 		
 		if(this.customBehavior.draw) this.customBehavior.draw();
-		
-		//Matrix.pop();
+	
 	}
 	with(c){
 		if(!Array.isArray(c)) c = [c];

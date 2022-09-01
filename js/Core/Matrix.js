@@ -59,8 +59,6 @@ class Matrix {
         raw.f=m1.b*m2.e+m1.d*m2.f+m1.f;
         return new Matrix(raw);
     }
-
-
     constructor(raw={}){
         this.inverse=raw.inverse?new Matrix():null;
         this.set(raw);

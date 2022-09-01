@@ -9,12 +9,12 @@ class Transform extends GameComponent {
 		if(p.constructor.name == 'Anchors'){
 			this._anchor = p;
 		} else {
-			this._anchor = Anchors.TopLeft(p.x, p.y, 0, 0);
+			this._anchor = Anchors.TopLeft(0, 0, 0, 0);
 		}
 		
 		this._angle = 0;
 		this._scale = vec2(1);
-		this._position = vec2(0);
+		this._position = vec2(p.x, p.y);
 
 		this.rect = new Rect(0,0,0,0); // this canvas is used to position child GameObjects
 
@@ -25,7 +25,7 @@ class Transform extends GameComponent {
 			localToParent:null,
 			localToWorld:null,
 			worldToLocal:null,
-			draw:null,
+			predraw:null,
 		};
 	}
 	dirty(){
@@ -114,19 +114,21 @@ class Transform extends GameComponent {
 	}
 	drawDebugInner(){
 		if(!this._drawDebug) return;
-		Font.basic.apply();
-		gfx.fillStyle="#FFF";
-		gfx.fillText("size: "+this.rect.w+"x"+this.rect.h, this.pos.x + 5,this.pos.y - 3);
-		gfx.fillCircle(this.pos.x,this.pos.y,5);
+		
 	}
 	drawDebugOuter(){
 		if(!this._drawDebug) return;
 		Font.basic.apply();
 
-		//gfx.fillStyle="#000";
-		//gfx.fillCircle(0,0,10);
-		//gfx.fillStyle="#FFF";
-		//gfx.fillCircle(0,0,8);
+		// draw origin
+		const drawOrigin = (x,y)=>{
+			gfx.fillStyle="#000";
+			gfx.fillCircle(x,y,10);
+			gfx.fillStyle="#FFF";
+			gfx.fillCircle(x,y,8);
+			gfx.fillText("x: "+this.x+"\ny: "+this.y+"\nw: "+this.rect.w+"\nh:"+this.rect.h, x+ 5,y- 3);
+		};
+		drawOrigin(this.anchorpos.x, this.anchorpos.y);
 
 		this.rect.draw();
 		this._anchor.draw();
@@ -142,40 +144,42 @@ class Transform extends GameComponent {
 	calcMatrices(){
 		this._dirty = false;
 
-		// TODO: reconcile _margins, position, anchor, and rect
-
 		if(this.parent) {
 			this.rect = this._anchor.calcRectFromParent(this.parent.rect);
 		} else {
-			this.rect = game.view.size;
+			this.rect = Rect.from(game.view.size);
 		}
-		// this position is where we draw the origin
-		this.pos = this.rect.getPositionOfAnchor(this._anchor.origin ?? vec2(0));
+		// this is the local origin
+		this.anchorpos = this.rect.getPositionOfAnchor(this._anchor.origin ?? vec2(0));
 
 		const m1 = new Matrix(); // parent-to-local
 		const m2 = new Matrix(); // local-to-parent
 
-		// build transform matrix:
-		//m1.translate(p1.x, p1.y); // <-- wait... doesn't work w/ rects
-		m1.translate(this.pos.x, this.pos.y);
+		// build parent-origin to local-origin
+		m1.translate(this.anchorpos.x, this.anchorpos.y);
 		m1.rotate(this._angle);
 		m1.scale(this._scale.x, this._scale.y);
-		//m1.translate(-this.pos.x, -this.pos.y);
 
-		// build inverse matrix:
-		//m2.translate(this.pos.x, this.pos.y);
+		// build inverse (local-to-parent)
 		m2.scale(1/this._scale.x, 1/this._scale.y);
 		m2.rotate(-this._angle);
-		//m2.translate(-this.x, -this.y);
-		m2.translate(-this.pos.x, -this.pos.y);
+		m2.translate(-this.anchorpos.x, -this.anchorpos.y);
 
-		this.matrix.parentToLocal = m1;
-		this.matrix.localToParent = m2;
+		this.matrix.parentToLocal = m2;
+		this.matrix.localToParent = m1;
 
 		// multiply matrices by parents' matrices:
-		this.matrix.localToWorld = (this.parent&&this.parent.matrix) ? Matrix.mult(this.parent.matrix.localToWorld, m1) : m1;
-		this.matrix.draw = this.matrix.localToWorld;
-		this.matrix.draw.translate(-this.pos.x, -this.pos.y);
+
+		// the predraw matrix is simply the parent's world-matrix
+		// this allows us to draw parent-oriented debug info
+		this.matrix.predraw = (this.parent&&this.parent.matrix) ? new Matrix(this.parent.matrix.localToWorld) : new Matrix();
+		this.matrix.predraw.translate(this.x, this.y);
+		
+		this.matrix.draw = Matrix.mult(this.matrix.predraw, m1);
+
+		this.matrix.localToWorld = Matrix.mult(this.matrix.predraw, m1);
+		this.matrix.localToWorld.translate(-this.anchorpos.x, -this.anchorpos.y);
+		
 		this.matrix.worldToLocal = (this.parent&&this.parent.matrix) ? Matrix.mult(m2, this.parent.matrix.worldToLocal) : m2;
 		
 		// tell the other components to refresh layouts

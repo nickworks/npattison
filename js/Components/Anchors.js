@@ -72,7 +72,7 @@ class Anchors {
 	fixedWidth = 0;
 	fixedHeight = 0;
 
-	origin = vec2(.5);
+	origin = vec2(0);
 	position = vec2(0);
 
 	_pxAnchorMin = vec2(0);
@@ -165,20 +165,17 @@ class Anchors {
 		const x = this._pxAnchorMin.x - this.origin.x * w + this.position.x;
 		const y = this._pxAnchorMin.y - this.origin.y * h + this.position.y;
 
-		if(this.anchorType == AnchorType.NoStretch){
-			return new Rect(x,y,w,h);
-		}
-		else if(this.anchorType == AnchorType.Stretch){
-			return availableSpace;
-		}
-		else if(this.anchorType == AnchorType.StretchVertical) {
-			return new Rect(x,yMin,w,yMax - yMin);
-		}
-		else if(this.anchorType == AnchorType.StretchHorizontal) {
-			return new Rect(xMin,y,xMax - xMin,h);
-		}
-		else if(this.anchorType == AnchorType.Simple){
-			return new Rect(this.position.x, this.position.y, 0, 0);
+		switch(this.anchorType){
+			case AnchorType.NoStretch:
+				return new Rect(x,y,w,h);
+			case AnchorType.Stretch:
+				return availableSpace;
+			case AnchorType.StretchVertical: 
+				return new Rect(x,yMin,w,yMax - yMin);
+			case AnchorType.StretchHorizontal: 
+				return new Rect(xMin,y,xMax - xMin,h);
+			case AnchorType.Simple:
+				return new Rect(this.position.x, this.position.y, 0, 0);
 		}
 		console.log("error!");
 	}

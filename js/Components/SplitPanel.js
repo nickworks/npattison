@@ -49,7 +49,7 @@ class SplitPanel extends GameComponent {
             
             const pad_before = i == 0 ? pad_outer : pad_inner;
             const pad_after = i == amt - 1 ? pad_outer : pad_inner;
-
+            const o = t._anchor.origin;
             if(this.vert){
                 t._anchor = Anchors.Stretch(pad_before,pad_outer,pad_after,pad_outer);
                 t._anchor.anchorMin = vec2(0, i/amt);
@@ -59,6 +59,7 @@ class SplitPanel extends GameComponent {
                 t._anchor.anchorMin = vec2(i/amt,0);
                 t._anchor.anchorMax = vec2((i+1)/amt,1);
             }
+            t._anchor.origin =o;
             
             i++;
         });

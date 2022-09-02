@@ -18,21 +18,22 @@ class Scene extends GameObject {
         this.transform.rect=game.view.size;
     }
     /** Creates a new GameObject */
-    instantiate(p=vec2(),parent=undefined,customBehavior={}){
+    instantiate(p=vec2(),parent=undefined,customBehavior={},index=0){
 
         const obj = new GameObject(new Transform(p), customBehavior);
 
         if(typeof parent ==="object" && parent.constructor.name ==="Transform"){
-            obj.transform.parent = parent;
+            //obj.transform.parent = parent;
+            parent.addChild(obj.transform, 0);
         } else {
-            obj.transform.parent = this.transform;
-            //this.objs.add(obj);
+            //obj.transform.parent = this.transform;
+            this.transform.addChild(obj.transform, 0);
         }
         return obj;
     }
 
     destroy(gameobject){
-        this.deadobjs.dead.add(gameobject);
+        this.deadobjs.push(gameobject);
     }
 	draw(){
         game.view.fill(this.color);
@@ -47,13 +48,6 @@ class Scene extends GameObject {
 	update(){
         
         super.update();
-        /*
-        this.objs.touchables.forEach(o => {
-            if(o.touch && mouse.onDown) o.touch();
-        });
-        */
-        // update all objects:
-        // this.objs.all.forEach(o => o.update());
 
         this.doCollisionDetection();
 
@@ -74,9 +68,11 @@ class Scene extends GameObject {
                 o.transform.parent = null;
             } else {
                 // if no parent, remove from scene
-                this.removeFrom(o, this.all);
+                o.transform.parent = null;
+
             }
         });
+
         this.deadobjs = [];
     }
     reverseIterate(arr, f){

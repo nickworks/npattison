@@ -97,19 +97,25 @@ class Transform extends GameComponent {
 		return this._parent;
 	}
 	set parent(p) {
-
+		if(p==null) this.removeFromParent();
+		else p.addChild(this);
+	}
+	removeFromParent(){
 		if(this._parent && this._parent.children){ // if parent is a transform...
 			// remove from parent's children list:
 			const i = this._parent.children.indexOf(this);
 			this._parent.children.splice(i,1);
+			this._parent = null;
 		}
-
-		// TODO: verify `p` is a Transform OR null...
-		this._parent = p;
-		
-		// add `this` to parent's children[] array
-		if(p && p.children) p.children.push(this); 
-
+	}
+	addChild(xform, i=-1){
+		xform.removeFromParent();
+		xform._parent = this;
+		if(i >= 0){
+			this.children.splice(i, 0, xform); 
+		} else {
+			this.children.push(xform);
+		}
 		this.dirty();
 	}
 	drawDebugInner(){
@@ -175,9 +181,10 @@ class Transform extends GameComponent {
 		this.matrix.predraw = (this.parent&&this.parent.matrix) ? new Matrix(this.parent.matrix.localToWorld) : new Matrix();
 		this.matrix.predraw.translate(this.x, this.y);
 		
+		// where to draw the 
 		this.matrix.draw = Matrix.mult(this.matrix.predraw, m1);
 
-		this.matrix.localToWorld = Matrix.mult(this.matrix.predraw, m1);
+		this.matrix.localToWorld = new Matrix(this.matrix.draw);
 		this.matrix.localToWorld.translate(-this.anchorpos.x, -this.anchorpos.y);
 		
 		this.matrix.worldToLocal = (this.parent&&this.parent.matrix) ? Matrix.mult(m2, this.parent.matrix.worldToLocal) : m2;

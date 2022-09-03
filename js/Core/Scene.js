@@ -15,15 +15,11 @@ class Scene extends GameObject {
     }
     /** Creates a new GameObject */
     instantiate(p=vec2(),parent=undefined,customBehavior={},index=0){
-
         const obj = new GameObject(new Transform(p), customBehavior);
-
         if(typeof parent ==="object" && parent.constructor.name ==="Transform"){
-            //obj.transform.parent = parent;
             parent.addChild(obj.transform, 0);
         } else {
-            //obj.transform.parent = this.transform;
-            this.transform.addChild(obj.transform, 0);
+            this.transform?.addChild(obj.transform, 0);
         }
         return obj;
     }
@@ -32,16 +28,16 @@ class Scene extends GameObject {
     }
 	draw(){
         Game.view.fill(this.color);
-
-        //this.cam.drawStart(); // push
         super.draw();
-        //this.cam.drawEnd(); // pop
     }
 	update(){
         super.update();
         this.#doCollisionDetection();
         this.#cleanup();
         this.cam.update();
+    }
+    #doCollisionDetection(){
+
     }
     #cleanup(){
         // remove dead objects from their parents:
@@ -51,16 +47,6 @@ class Scene extends GameObject {
         // clear the deadobjs array:
         this.#deadobjs = [];
     }
-    #doCollisionDetection(){
-
-    }
-    /*
-    reverseIterate(arr, f){
-        for(var i = arr.length - 1; i >= 0; i--){
-            f(arr[i], i);
-        }
-    }
-    */
     doResize(){
         this.transform.dirty();
     }

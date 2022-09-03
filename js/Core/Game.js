@@ -95,12 +95,7 @@ const Game = class {
     // returns the height of the viewport
     static height(){return Game.view.size.h;}
 
-    // returns view.gfx
-    //static gfx(){return Game.view.gfx;}
-
     static #update(){
-        //if(!Game.#scene) Game.#scene=new SceneTitle();
-
         Game.#resizeCanvas();
 
         Game.#scene?.update();

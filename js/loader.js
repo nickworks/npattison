@@ -34,11 +34,11 @@ loadThen([
         'js/Core/Rect.js',
         'js/Core/Sprite.js',
         'js/Core/Matrix.js',
-        'js/Core/Input/mouse.js',
-        'js/Core/Input/keyboard.js',
+        'js/Core/Input/Mouse.js',
+        'js/Core/Input/Keyboard.js',
         'js/Core/GameObject.js',
         'js/Core/Scene.js',
-        'js/Core/game.js',
+        'js/Core/Game.js',
     ],
     // load components:
     [

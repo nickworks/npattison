@@ -8,8 +8,9 @@ class SplitPanel extends GameComponent {
     }
     start(){
         this.childrenToAdd.forEach(c=>{
-             c.transform.parent = this.transform;
+             if(c.transform) c.transform.parent = this.transform;
         });
+        this.childrenToAdd = [];
         this.layout();
     }
     layout(){

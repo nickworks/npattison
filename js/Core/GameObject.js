@@ -92,6 +92,7 @@ class GameObject {
 		return this;
 	}
 	addComponent(c){
+		if(typeof c != "object") return this;
 		this.#components.push(c);
 		c.gameObject = this;
 		this.#scanComponents();

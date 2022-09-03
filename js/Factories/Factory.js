@@ -14,7 +14,8 @@ const Factory = {
 	Particles(url=""){
 		return new RenderParticles(url);
 	},
-	Split(children=[],vert=false,padding=10,margin=0){
+	Split(children=[],vert=false,padding=10,margin=undefined){
+		if(margin===undefined) margin=padding;
 		return new SplitPanel(children, vert, padding, margin);
 	},
 };

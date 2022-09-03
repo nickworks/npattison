@@ -1,3 +1,6 @@
+// This function loads one or more scripts in order,
+// when they're all loaded, an optional callback is ran.
+// It is a recursive nightmare.
 const loadThen=(a,callback=()=>{},showFiles=false)=>{
     let loaded=0;
     if(typeof a=="string"){
@@ -18,13 +21,12 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         else if(typeof callback=="function")callback(); // run the callback
     }
 };
-
-
+// when the page has loaded, run this closure:
 ((showFiles)=>{
 
-    // this is a list of the files to load
+    // this is a list of files to load
     // in the order we want them loaded
-    const files=[
+    loadThen([
         
         'js/Components/GameComponent.js',
         'js/Components/RenderSprite.js',
@@ -56,13 +58,7 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         'js/Scenes/SceneTitle.js',
 
         'js/Core/game.js',
-    ];
-
-    // This function loads one or more scripts in order,
-    // when they're all loaded, an optional callback is ran.
-    // It is a recursive nightmare.
-
-    loadThen(files,()=>{
+    ],()=>{
 
         Game.DEVMODE=true;
 
@@ -74,5 +70,4 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         window.game.start("myCanvas");
 
     }, showFiles);
-
 })(false);

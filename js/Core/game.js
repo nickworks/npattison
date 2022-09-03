@@ -1,4 +1,4 @@
-class Game {
+const Game = class {
 
     static DEVMODE = true;
 
@@ -122,6 +122,7 @@ class Game {
         window.gfx=this.view.gfx;
     }
     draw(){
+        Matrix.clear();
         this.scene.draw();        
     }
     switchScene(nextScene){

@@ -1,4 +1,4 @@
-class Sprite {
+const Sprite = class {
     constructor(url){
         this.img = new Image();
         this.img.src = url;

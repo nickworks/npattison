@@ -1,4 +1,4 @@
-class Rect {
+const Rect = class {
 
     static grow(r,a){
         return new Rect(r.x-a/2,r.y-a/2,r.w+a,r.h+a);

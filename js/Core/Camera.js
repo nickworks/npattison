@@ -1,4 +1,4 @@
-class Camera {
+const Camera = class {
     constructor(){
         this.vals={
             x:0,
@@ -119,14 +119,14 @@ class Camera {
         this.vals.scale=this.goals.scale;
     }
     drawStart(){
-        Matrix.push();
-        Matrix.translate(this.screenOffset.x|0,this.screenOffset.y|0);
-        if(this.vals.scale!=1)Matrix.scale(this.vals.scale);
-        if(this.vals.angle!=0)Matrix.rotate(this.vals.angle);
-        Matrix.translate(-this.vals.x|0,-this.vals.y|0);
+        //Matrix.push();
+        //Matrix.translate(this.screenOffset.x|0,this.screenOffset.y|0);
+        //if(this.vals.scale!=1)Matrix.scale(this.vals.scale);
+        //if(this.vals.angle!=0)Matrix.rotate(this.vals.angle);
+        //Matrix.translate(-this.vals.x|0,-this.vals.y|0);
     }
     drawEnd(){
-        Matrix.pop();
+        //Matrix.pop();
     }
     updateScreenOffset(){
         this.screenOffset.x=game.width()/2;

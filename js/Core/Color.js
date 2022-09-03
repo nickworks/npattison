@@ -1,8 +1,5 @@
-class Color {
-    static RGB(r,g,b){
-        return "rgb("+r+","+g+","+b+")";
-    }
-    static HSV(h,s,v){
-        return "hsl("+h+","+s+"%,"+v+"%)";
-    }
-}
+const Color = {
+    RGB:(r,g,b)=>"rgb("+r+","+g+","+b+")",
+    HSV:(h,s,v)=>"hsl("+h+","+s+"%,"+v+"%)",
+    RGBA:(r,g,b,a)=>"rgb("+r+","+g+","+b+","+a+")",
+};

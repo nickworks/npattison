@@ -1,53 +1,6 @@
-class Matrix {
-
-    static stack=[new Matrix({inverse:true})];
-    static push(m){
-        // adds a new Matrix in the stack
-        if(!m) m = new Matrix({inverse:true});
-        Matrix.stack.push(m);
-        Matrix.apply();
-    }
-    static pop() {
-        // removes the top Matrix in the stack
-        Matrix.stack.pop();
-        Matrix.apply();
-    }
-    static last() {
-        // returns the top Matrix in the stack
-        const s=Matrix.stack.length;
-        return (s<=0)?new Matrix():Matrix.stack[s-1];
-    }
-    static scale(sx, sy) {
-        // this scales the top Matrix in the stack by `sx` and `sy` percent
-        Matrix.last().scale(sx, sy);
-        Matrix.apply();
-    }
-    static translate(x,y) {
-        // this translates the top Matrix in the stack by `x` and `y` pixels
-        Matrix.last().translate(x,y);
-        Matrix.apply();
-    }
-    static rotate(r) {
-        // this rotates the top Matrix in the stack by `r` radians
-        Matrix.last().rotate(r);
-        Matrix.apply();
-    }
-    static apply() {
-        // applies the current Matrix stack to the renderer
-        const res=new Matrix();
-        Matrix.stack.forEach(m=>{
-            res.mult(m);
-        });
-        gfx.setTransform(res.a,res.b,res.c,res.d,res.e,res.f);
-    }
-    static inverse() { // we might not need this feature...
-        console.log("????");
-        const res=new Matrix();
-        for(var i=Matrix.stack.length-1;i>=0;i--){
-            const inv=Matrix.stack[i].inverse;
-            if(inv)res.mult(inv);
-        };
-        return res;
+const Matrix = class {
+    static clear(){
+        new Matrix().apply();
     }
     static mult(m1,m2) {
         const raw={};

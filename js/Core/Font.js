@@ -1,24 +1,30 @@
-class Font {
+const Font = class {
 
-    static basic = new Font();
-    static center = new Font({align:"center"});
-    static big = new Font({size:56,align:"center"});
-
-    constructor(raw={}){
-        this.size=raw.size||12;
-        this.color=raw.color||"#000";
-        this.font=raw.font||"Arial";
-        this.align=raw.align||"left";
-        this.baseline=raw.valign||"alphabetic";
+    props = {
+        size: 12,
+        color: "#000",
+        font: "Arial",
+        align: "left",
+        baseline: "alphabetic",
+    };
+    constructor(raw = {}){
+        this.props = {
+            ...this.props,
+            ...raw,
+        };
     }
     apply(){
-        gfx.fillStyle = this.color;
-        gfx.font = this.size + "px " + this.font;
-        gfx.textAlign = this.align;
-        gfx.textBaseline = this.baseline;
+        gfx.fillStyle = this.props.color;
+        gfx.font = this.props.size + "px " + this.props.font;
+        gfx.textAlign = this.props.align;
+        gfx.textBaseline = this.props.baseline;
     }
     measure(str){
         this.apply();
         return gfx.measureText(str);
     }
-}
+};
+
+Font.basic = new Font();
+Font.center = new Font({align:"center"});
+Font.big = new Font({size:56,align:"center"});

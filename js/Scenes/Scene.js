@@ -1,21 +1,17 @@
 class Scene extends GameObject {
-	constructor(){
+
+    #deadobjs = [];
+    color = "#888";
+
+    constructor(){
         
         super();
-        // this object contains all of the objects in the scene
-        // objects are sorted into categories (for collision detection, etc)
-		this.deadobjs=[];
 
-        this.color="#888";
-        
-        //this.objs.clear(); // init the obj-list
-        
         this.cam=new Camera();
         this.gravity=1200;
 	}
     start(){
         this.transform.anchor = Anchors.Stretch;
-        this.transform.rect=game.view.size;
     }
     /** Creates a new GameObject */
     instantiate(p=vec2(),parent=undefined,customBehavior={},index=0){
@@ -33,22 +29,21 @@ class Scene extends GameObject {
     }
 
     destroy(gameobject){
-        this.deadobjs.push(gameobject);
+        this.#deadobjs.push(gameobject);
     }
 	draw(){
         game.view.fill(this.color);
 
-        this.cam.drawStart(); // push
-
-        //this.objs.all.forEach(o => o.draw());
+        //this.cam.drawStart(); // push
         super.draw();
-
-        this.cam.drawEnd(); // pop
+        //this.cam.drawEnd(); // pop
     }
 	update(){
         
+        // update all objects:
         super.update();
 
+        // do collision detection
         this.doCollisionDetection();
 
         // remove all Destroyed objects:
@@ -60,20 +55,12 @@ class Scene extends GameObject {
         return false; // what does this do?
     }
     cleanup(){
-        // remove dead objects
-        this.deadobjs.forEach(o=>{
-
-            if(o.transform.parent){
-                // if parent, remove from parent
-                o.transform.parent = null;
-            } else {
-                // if no parent, remove from scene
-                o.transform.parent = null;
-
-            }
+        // remove dead objects from their parents:
+        this.#deadobjs.forEach(o => {
+            o.transform.parent = null;
         });
-
-        this.deadobjs = [];
+        // clear the deadobjs array:
+        this.#deadobjs = [];
     }
     reverseIterate(arr, f){
         for(var i = arr.length - 1; i >= 0; i--){

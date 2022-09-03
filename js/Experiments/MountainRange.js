@@ -1,4 +1,8 @@
 class MountainRange extends RenderShape {
+
+    #vel = -200;
+    #lightValue = 25;
+
     constructor(){
         //////////// Generate points:
         const width = game.view.size.w;
@@ -18,8 +22,6 @@ class MountainRange extends RenderShape {
         super(pts);
         
         //this.transform.scale = vec2(1,0);
-        this.vel =  -200;
-        this.lightValue = 25;
     }
     start(){
         this.transform.scale = vec2(Maths.rand(1,1.1),Maths.rand(0,.1));
@@ -28,19 +30,16 @@ class MountainRange extends RenderShape {
 
         const dt = game.time.dt;
 
-        this.vel += 50 * dt;
-
+        this.#vel += 50 * dt;
         
         this.transform.x = 0;
-        this.transform.y += this.vel * dt;
+        this.transform.y += this.#vel * dt;
         
         this.transform.scale.x += .2 * dt; 
         this.transform.scale.y += .5 * dt;
         
-        if(this.lightValue < 100) this.lightValue += 5 * dt;
-        //if(this.lightValue > 100) this.lightValue = 100;
-        this.color = Color.HSV(200, 50, this.lightValue);
-
-        if(this.lightValue > 75) this.gameObject.destroy();
+        if(this.#lightValue < 100) this.#lightValue += 5 * dt;
+        this.color = Color.HSV(200, 50, this.#lightValue);
+        if(this.#lightValue > 75) this.gameObject.destroy();
     }
 }

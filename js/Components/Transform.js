@@ -156,14 +156,14 @@ class Transform extends GameComponent {
 	#drawDebugOuter(){
 		if(!this._drawDebug) return;
 		Font.basic.apply();
-
+        const gfx = Game.gfx;
 		// draw origin
 		const drawOrigin = (x,y)=>{
 			gfx.fillStyle="#000";
 			gfx.fillCircle(x,y,10);
 			gfx.fillStyle="#FFF";
 			gfx.fillCircle(x,y,8);
-			gfx.fillText("x: "+this.x+"\ny: "+this.y+"\nw: "+this.#rect.w+"\nh:"+this.#rect.h, x+ 5,y- 3);
+			gfx.fillText("x: "+Math.round(this.x)+"\ny: "+Math.round(this.y)+"\nw: "+Math.round(this.#rect.w)+"\nh:"+Math.round(this.#rect.h), x+ 5,y- 3);
 		};
 		drawOrigin(this.#anchorpos.x, this.#anchorpos.y);
 
@@ -183,7 +183,7 @@ class Transform extends GameComponent {
 		if(this.parent) {
 			this.#rect = this.#anchor.calcRectFromParent(this.parent.#rect);
 		} else {
-			this.#rect = Rect.from(game.view.size);
+			this.#rect = Rect.from(Game.view.size);
 		}
 		this.#offset_rect = Rect.from(this.#rect);
 		this.#offset_rect.x = -this.#offset_rect.w * this.#anchor.origin?.x??0;

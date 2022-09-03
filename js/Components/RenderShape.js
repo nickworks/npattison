@@ -6,6 +6,7 @@ class RenderShape extends GameComponent {
     }
     draw(){
         if(this.pts.length == 0) return;
+        const gfx = Game.gfx;
         gfx.fillStyle=this.color;
         gfx.beginPath();
         gfx.moveTo(this.pts[0].x, this.pts[0].y);

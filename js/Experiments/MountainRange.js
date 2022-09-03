@@ -5,7 +5,7 @@ class MountainRange extends RenderShape {
 
     constructor(){
         //////////// Generate points:
-        const width = game.view.size.w;
+        const width = Game.view.size.w;
         const offset = -width/2;
         const pts = [];
         pts.push(vec2(offset - 50,-100));
@@ -28,7 +28,7 @@ class MountainRange extends RenderShape {
     }
     update(){
 
-        const dt = game.time.dt;
+        const dt = Game.time.dt;
 
         this.#vel += 50 * dt;
         

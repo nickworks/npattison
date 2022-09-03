@@ -14,6 +14,7 @@ const Font = class {
         };
     }
     apply(){
+        const gfx = Game.gfx;
         gfx.fillStyle = this.props.color;
         gfx.font = this.props.size + "px " + this.props.font;
         gfx.textAlign = this.props.align;
@@ -21,7 +22,7 @@ const Font = class {
     }
     measure(str){
         this.apply();
-        return gfx.measureText(str);
+        return Game.gfx.measureText(str);
     }
 };
 

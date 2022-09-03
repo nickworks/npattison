@@ -7,7 +7,7 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         // LOAD SCRIPT:
         const s=document.createElement('script');
         s.addEventListener("load", ()=>{ // when the file has loaded:
-            if(showFiles)console.log(a+" loaded!");
+            if(showFiles)console.log(a+" loaded");
             if(typeof callback == "function")callback(); // run the callback
         });
         s.src=a; document.head.appendChild(s); // add the <script> to the DOM
@@ -16,31 +16,17 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         if(a.length > 0)
             loadThen(a[0],()=>{ // load the first script in the array
                 a=a.slice(1); // then shift the array
-                loadThen(a,callback); // do it again
-            }); 
+                loadThen(a,callback, showFiles); // do it again
+            }, showFiles); 
         else if(typeof callback=="function")callback(); // run the callback
     }
 };
-// when the page has loaded, run this closure:
-((showFiles)=>{
 
-    // this is a list of files to load
-    // in the order we want them loaded
-    loadThen([
-        
-        'js/Components/GameComponent.js',
-        'js/Components/RenderSprite.js',
-        'js/Components/RenderShape.js',
-        'js/Components/RenderText.js',
-        'js/Components/RenderParticles.js',
-        'js/Components/RoundedRect.js',
-        'js/Components/SplitPanel.js',
-        'js/Components/Anchors.js',
-        'js/Components/Transform.js',
-        'js/Core/GameObject.js',
-
-        'js/Experiments/MountainRange.js',
-
+// this is a list of files to load
+// in the order we want them loaded
+loadThen([
+    // load core files:
+    [
         'js/Core/Maths.js',
         'js/Core/Font.js',
         'js/Core/Color.js',
@@ -50,24 +36,39 @@ const loadThen=(a,callback=()=>{},showFiles=false)=>{
         'js/Core/Matrix.js',
         'js/Core/Input/mouse.js',
         'js/Core/Input/keyboard.js',
-
+        'js/Core/GameObject.js',
+        'js/Core/Scene.js',
+        'js/Core/game.js',
+    ],
+    // load components:
+    [
+        'js/Components/GameComponent.js',
+        'js/Components/RenderSprite.js',
+        'js/Components/RenderShape.js',
+        'js/Components/RenderText.js',
+        'js/Components/RenderParticles.js',
+        'js/Components/RoundedRect.js',
+        'js/Components/SplitPanel.js',
+        'js/Components/Anchors.js',
+        'js/Components/Transform.js',
+    ],
+    // load factories, assets:
+    [
         'js/Factories/Factory.js',
         'js/Factories/Data.js',
-
-        'js/Scenes/Scene.js',
+    ],
+    // load user code:
+    [
+        'js/Experiments/MountainRange.js',
         'js/Scenes/SceneTitle.js',
+    ]
+],()=>{ // then run:
 
-        'js/Core/game.js',
-    ],()=>{
+    Game.DEVMODE = true;
 
-        Game.DEVMODE=true;
+    if(Game.DEVMODE) console.log("------ ALL FILES LOADED ------");
+    if(Game.DEVMODE) console.log("launching game...");
+    
+    Game.start("myCanvas").switchScene(new SceneTitle());
 
-        if(Game.DEVMODE) console.log("------ ALL FILES LOADED ------");
-        if(Game.DEVMODE) console.log("launching game...");
-        
-        window.scene=null;
-        window.game=new Game();
-        window.game.start("myCanvas");
-
-    }, showFiles);
-})(false);
+}, false);

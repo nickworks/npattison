@@ -12,17 +12,20 @@ const Matrix = class {
         raw.f=m1.b*m2.e+m1.d*m2.f+m1.f;
         return new Matrix(raw);
     }
+    inverse=null;
+    a=1;
+    b=0;
+    c=0;
+    d=1;
+    e=0;
+    f=0;
+    
     constructor(raw={}){
         this.inverse=raw.inverse?new Matrix():null;
         this.set(raw);
     }
     set(raw){
-        this.a=raw.a||1;
-        this.b=raw.b||0;
-        this.c=raw.c||0;
-        this.d=raw.d||1;
-        this.e=raw.e||0;
-        this.f=raw.f||0;
+        Object.assign(this, raw);
     }
     scale(sx,sy){
         sx = Number(sx);
@@ -61,7 +64,6 @@ const Matrix = class {
     apply(){
         // applies this matrix to the renderer
         // this overwrites the renderer's current transform
-
-        gfx.setTransform(this.a,this.b,this.c,this.d,this.e, this.f);
+        Game.gfx.setTransform(this.a,this.b,this.c,this.d,this.e, this.f);
     }
 }

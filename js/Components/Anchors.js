@@ -180,6 +180,8 @@ class Anchors {
 		console.log("error!");
 	}
 	draw(){
+        const gfx = Game.gfx;
+
         // gfx.strokeStyle = "#FFF";
         // gfx.strokeRect(
 		// 	this.#marginLeft,

@@ -13,19 +13,22 @@ class SceneTitle extends Scene {
         const cards = [
             this.instantiate().with(Factory.RoundRect(10, Color.RGBA(0,0,0,.5))),
             this.instantiate().with(Factory.RoundRect(10, Color.RGBA(0,0,0,.5))),
-            this.instantiate().with(Factory.RoundRect(10, Color.RGBA(0,0,0,.5))),
+            this.instantiate(Anchors.Stretch().setOrigin(.5, .5)).with([
+                Factory.RoundRect(10, Color.RGBA(255,255,0, .5)),
+                Factory.TextField("yello world?",new Font({size:40,align:'center',baseline:'middle'})),
+            ]).debug(),
         ];
-        this.card1 = this.instantiate(Anchors.TopStretch(2,2,2,100).setOrigin(.5, 0)).with( [
+        this.cardSpin = cards[2];
+        this.card1 = this.instantiate((new Anchors(vec2(.33,.2), vec2(.66,.8))).setMargins(0,0,0,0).setOrigin(.5, 0)).with( [
             Factory.RoundRect(15, "rgba(0,0,0,0.5)"),
-            Factory.Split(cards, false, 5),
-        ]);
-        //this.card1.transform._drawDebug = true;
-
-        this.instantiate(vec2(200, 250)).with(Factory.TextField("yello world?",new Font({size:40,align:'center'}))).debug();
+            Factory.Split(cards, true, 5),
+        ]).debug();
+        //this.instantiate(vec2(200, 250)).with(Factory.TextField("yello world?",new Font({size:40,align:'center'}))).debug();
     }
     update(){
-        this.#delayUntilSpawnMountain -= game.time.dt;
+        this.#delayUntilSpawnMountain -= Game.time.dt;
         if(this.#delayUntilSpawnMountain <= 0) this.#makeNextRange();
+        this.cardSpin.transform.angle += Game.time.dt;
 
         super.update();
     }

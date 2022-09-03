@@ -20,7 +20,7 @@ class RoundedRect extends GameComponent {
         this.color = "#fff";
     }
     draw(){
-
+        const gfx = Game.gfx;
         gfx.fillStyle=this.color;
 
         const radius = this.radius;

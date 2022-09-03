@@ -168,10 +168,12 @@ const Rect = class {
         return "{"+this.x+", "+this.y+", "+this.w+", "+this.h+"}";
     }
     draw(){
+        const gfx = Game.gfx;
         gfx.strokeStyle = "#FFF";
         gfx.strokeRect(this.x,this.y,this.w,this.h);
     }
     drawStroke(color="#F00",w=3){
+        const gfx = Game.gfx;
         gfx.beginPath();
         gfx.strokeStyle=color;
         gfx.strokeWegith=+w;

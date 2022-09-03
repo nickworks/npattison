@@ -21,19 +21,19 @@ class RenderSprite extends GameComponent {
     	this.img.src = url;
     }
     draw(){
-    	gfx.fillStyle="#FF0000";
-
-
+        const gfx = Game.gfx;
+		
     	const w = this.img.width;
     	const h = this.img.height;
     	const x = -this.anchor.x*w;
     	const y = -this.anchor.y*h;
-
+		
     	this.transform.rect.x = x;
     	this.transform.rect.y = y;
     	this.transform.rect.w = w;
     	this.transform.rect.h = h;
-
+		
+    	gfx.fillStyle="#FF0000";
     	gfx.fillRect(x,y,w,h);
         gfx.drawImage(this.img, x, y);
 

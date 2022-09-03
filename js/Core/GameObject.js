@@ -29,9 +29,9 @@ class GameObject {
 
 		if(this.#customBehavior.destroy) this.#customBehavior.destroy();
 
-		scene.destroy(this);
+		Game.scene?.destroy(this);
 	}
-	start(){
+	#start(){
 		this.#hasNeverTicked = false;
 		this.#components.forEach(c => {
 			if(c.start)c.start()
@@ -40,7 +40,7 @@ class GameObject {
 	}
 	update(){
 
-		if(this.#hasNeverTicked) this.start();
+		if(this.#hasNeverTicked) this.#start();
 
 		if(this.#updateable){
 			// update components:
@@ -53,8 +53,7 @@ class GameObject {
 
 		if(this.#customBehavior.update) this.#customBehavior.update();
 	}
-	layout(){
-		
+	layout(){		
 		// this function is triggered by Transform.calcMatrices(), which is triggered by _dirty flag
 
 		if(this.#layoutable){
@@ -71,7 +70,6 @@ class GameObject {
 		if(this.#customBehavior.layout) this.#customBehavior.layout();
 	}
 	draw(){
-		// tell transform to render:
 		this.transform.render();
 	}
 	drawComponents(){
@@ -91,11 +89,12 @@ class GameObject {
 	}
 	debug(){
 		this.transform._drawDebug = true;
+		return this;
 	}
 	addComponent(c){
 		this.#components.push(c);
 		c.gameObject = this;
-		this.scanComponents();
+		this.#scanComponents();
 		return this;
 	}
 	getComponent(type){
@@ -115,9 +114,9 @@ class GameObject {
 				break;
 			}
 		}
-		this.scanComponents();
+		this.#scanComponents();
 	}
-	scanComponents(){
+	#scanComponents(){
 		this.#updateable = false;
 		this.#drawable = false;
 		this.#layoutable = false;

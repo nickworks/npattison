@@ -29,8 +29,8 @@ const Camera = class {
     }
     easeTowardsGoals(){
         
-        let p1 = Maths.slide(this.pa1s, Game.time._dt);
-        let p2 = Maths.slide(this.pa1s, Game.time._dt);
+        let p1 = Maths.slide(this.pa1s, Time._dt);
+        let p2 = Maths.slide(this.pa1s, Time._dt);
         this.vals.x=Maths.lerp(this.vals.x,this.goals.x,p1);
         this.vals.y=Maths.lerp(this.vals.y,this.goals.y,p1);
         this.vals.angle=Maths.lerp(this.vals.angle,this.goals.angle,p2);
@@ -101,7 +101,7 @@ const Camera = class {
     }
     doShake(){
         if(this.shake>0){
-            this.shake-=game.time.dt; 
+            this.shake-=Time.dt; 
             var shake=this.shake;
             shake*=shake;
             shake*=200;
@@ -129,8 +129,8 @@ const Camera = class {
         //Matrix.pop();
     }
     updateScreenOffset(){
-        this.screenOffset.x=Game.width()/2;
-        this.screenOffset.y=Game.height()/2;  
+        this.screenOffset.x=Game.width/2;
+        this.screenOffset.y=Game.height/2;  
     }
     worldMouse(){        
         if(!this.cachemouse){

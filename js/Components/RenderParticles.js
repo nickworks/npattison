@@ -15,23 +15,23 @@ class Particle {
 		
 	}
 	update(){
-		this.age+=game.time.dt;
+		this.age+=Time.dt;
 		if(this.age>=this.lifespan)this.die();
 
 
 		this.mass *= .95;
 		const accel = (1000 / this.mass);
-		this.speed += accel * game.time.dt;
+		this.speed += accel * Time.dt;
 
-		if(this.position.x < 0) this.vel.x -= 5 * game.time.dt;
-		if(this.position.x > 0) this.vel.x += 5 * game.time.dt;
+		if(this.position.x < 0) this.vel.x -= 5 * Time.dt;
+		if(this.position.x > 0) this.vel.x += 5 * Time.dt;
 
-		if(this.position.y < 0) this.vel.y -= 2 * game.time.dt;
-		if(this.position.y > 0) this.vel.y += 2 * game.time.dt;
+		if(this.position.y < 0) this.vel.y -= 2 * Time.dt;
+		if(this.position.y > 0) this.vel.y += 2 * Time.dt;
 
 
-		this.position.x += this.vel.x * this.speed * game.time.dt;
-		this.position.y += this.vel.y * this.speed * game.time.dt;
+		this.position.x += this.vel.x * this.speed * Time.dt;
+		this.position.y += this.vel.y * this.speed * Time.dt;
 
 	}
 	draw(img){
@@ -62,7 +62,7 @@ class RenderParticles extends GameComponent {
     	this.img.src = url;
     }
 	update(){
-		this.countdown-=game.time.dt;
+		this.countdown-=Time.dt;
 		if(this.countdown<=0){
 			this.countdown=1/this.rate;
 			this.spawn();

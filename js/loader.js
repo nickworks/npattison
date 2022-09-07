@@ -38,6 +38,8 @@ loadThen([
         'js/Core/Input/Keyboard.js',
         'js/Core/GameObject.js',
         'js/Core/Scene.js',
+        'js/Core/View.js',
+        'js/Core/Time.js',
         'js/Core/Game.js',
     ],
     // load components:
@@ -61,7 +63,7 @@ loadThen([
     [
         'js/Experiments/MountainRange.js',
         'js/Scenes/SceneTitle.js',
-    ]
+    ],
 ],()=>{ // then run:
 
     Game.DEVMODE = true;

@@ -22,13 +22,18 @@ class SceneTitle extends Scene {
         this.card1 = this.instantiate((new Anchors(vec2(.33,.2), vec2(.66,.8))).setMargins(0,0,0,0).setOrigin(.5, 0)).with( [
             Factory.RoundRect(15, "rgba(0,0,0,0.5)"),
             Factory.Split(cards, true, 5),
-        ]);
+        ]).debug();
+        this.sprite = this.instantiate(Anchors.TopLeft().setOrigin(1,1)).with([
+            Factory.Sprite("imgs/truffle.png"),
+            Factory.TextField("maybe?", Font.big),
+        ]).debug();
     }
     update(){
-        this.#delayUntilSpawnMountain -= Game.time.dt;
+        this.#delayUntilSpawnMountain -= Time.dt;
         if(this.#delayUntilSpawnMountain <= 0) this.#makeNextRange();
-        this.cardSpin.transform.angle = Math.sin(Game.time.now/500) * .25;
+        this.cardSpin.transform.angle = Math.sin(Time.now/500) * .25;
 
+        this.sprite.transform.position = vec2(mouse.x, mouse.y);
         super.update();
     }
     #makeNextRange(){

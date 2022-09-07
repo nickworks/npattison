@@ -28,7 +28,7 @@ class MountainRange extends RenderShape {
     }
     update(){
 
-        const dt = Game.time.dt;
+        const dt = Time.dt;
 
         this.#vel += 50 * dt;
         

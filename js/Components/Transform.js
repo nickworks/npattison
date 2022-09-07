@@ -137,36 +137,32 @@ class Transform extends GameComponent {
 		// of the game will see it has a renderable component
 		// this would cause an infinite loop
 
-		this.#matrix.predraw.apply();
-
-		// draw rect, origin (purple), anchor
-		if(Game.DEVMODE) this.#drawDebugOuter();
-		
 		this.#matrix.draw.apply();
 		this.gameObject.drawComponents();
-
-		//if(Game.DEVMODE) this.transform.#drawDebugInner();
+		
+		// draw debug:
+		this.#drawDebug();
 
 		// tell children to draw:
 		this.#children.forEach(t => t.render());
 	}
-	#drawDebugInner(){
+	#drawDebug(){
 		if(!this._drawDebug) return;
-	}
-	#drawDebugOuter(){
-		if(!this._drawDebug) return;
-		Font.basic.apply();
+		this.#matrix.predraw.apply();
+		const x = this.#anchorpos.x;
+		const y = this.#anchorpos.y;
+		const str = "x: "+Math.round(this.x)+" y: "+Math.round(this.y)+" w: "+Math.round(this.#rect.w)+" h:"+Math.round(this.#rect.h);
+		const width = Font.basic.measure(str).width + 6;
+		const height = Font.basic.props.size + 4;
         const gfx = Game.gfx;
-		// draw origin
-		const drawOrigin = (x,y)=>{
-			gfx.fillStyle="#000";
-			gfx.fillCircle(x,y,10);
-			gfx.fillStyle="#FFF";
-			gfx.fillCircle(x,y,8);
-			gfx.fillText("x: "+Math.round(this.x)+"\ny: "+Math.round(this.y)+"\nw: "+Math.round(this.#rect.w)+"\nh:"+Math.round(this.#rect.h), x+ 5,y- 3);
-		};
-		drawOrigin(this.#anchorpos.x, this.#anchorpos.y);
-
+		gfx.fillStyle="#000";
+		gfx.fillCircle(x,y,10);
+		gfx.fillStyle="#FFF";
+		gfx.fillCircle(x,y,8);
+		gfx.fillStyle=Color.RGBA(0,0,0,.8);
+		gfx.fillRect(x,y-height,width,height);
+		gfx.fillStyle="#FFF";
+		gfx.fillText(str,x+3,y-4);
 		this.#rect.draw();
 		this.#anchor.draw();
 	}

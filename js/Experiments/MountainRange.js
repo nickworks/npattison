@@ -24,7 +24,7 @@ class MountainRange extends RenderShape {
         //this.transform.scale = vec2(1,0);
     }
     start(){
-        this.transform.scale = vec2(Maths.rand(1,1.1),Maths.rand(0,.1));
+        this.transform.scale = vec2(Maths.rand(1,1.1), Maths.rand(0,.1));
     }
     update(){
 

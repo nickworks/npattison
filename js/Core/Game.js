@@ -3,7 +3,9 @@ const Game = class {
     static DEVMODE = true;
     static #scene = null;
     static #nextScene = null
+    static #defaultScene = Scene;
     static #alreadyRan = false;
+    static get scene() { return Game.#scene; }
 
     // access view values:
     static #view = new View();
@@ -16,6 +18,7 @@ const Game = class {
     static switchScene = (nextScene) => { Game.#nextScene = nextScene; }
 
     static #update(){
+        if(Game.#scene == null && Game.#defaultScene) Game.#scene = new Game.#defaultScene();
         Game.#resizeCanvas();
 
         Game.#scene?.update();

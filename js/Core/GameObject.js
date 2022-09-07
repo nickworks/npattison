@@ -25,11 +25,18 @@ class GameObject {
 		if(!this.#transform) this.#transform = this.getComponent("Transform");
 		return this.#transform;
 	}
+	instantiate(p=vec2(),customBehavior={},index=0){
+		// spawn game-object
+        const obj = new GameObject(new Transform(p), customBehavior);
+		// add as a child of this object:
+		this.transform?.addChild(obj.transform, 0);
+        return obj;
+    }
 	destroy(){
 
 		if(this.#customBehavior.destroy) this.#customBehavior.destroy();
 
-		Game.scene?.destroy(this);
+		this.transform.removeFromParent();
 	}
 	#start(){
 		this.#hasNeverTicked = false;

@@ -97,7 +97,7 @@ class Transform extends GameComponent {
 		this.dirty();
 	}
 	get root() {
-		let p = this.#parent;
+		let p = this.#parent ?? this;
 		while(p&&p.parent) p = p.parent;
 		return p;
 	}
@@ -120,10 +120,12 @@ class Transform extends GameComponent {
 			const i = this.#parent.#children.indexOf(this);
 			this.#parent.#children.splice(i,1);
 			this.#parent = null;
+		} else {
+			console.log("To change scenes, use Game.switchScene()");
 		}
 	}
 	addChild(xform, i=-1){
-		xform.removeFromParent();
+		if(this.#parent) xform.removeFromParent();
 		xform.#parent = this;
 		if(i >= 0){
 			this.#children.splice(i, 0, xform); 

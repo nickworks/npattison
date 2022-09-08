@@ -11,6 +11,9 @@ const Factory = {
 	RoundRect(r=10,c="rgba(0,0,0,.5)"){
 		return new RoundedRect(r,c);
 	},
+	Circle(r,c="rgb(0,0,0)"){
+		return new RenderCircle(r,c);
+	},
 	Particles(url=""){
 		return new RenderParticles(url);
 	},

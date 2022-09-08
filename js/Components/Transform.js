@@ -170,12 +170,12 @@ class Transform extends GameComponent {
 	}
 	update(){
 
-		if(this.#dirty) this.calcMatrices();
+		if(this.#dirty) this.#calcMatrices();
 
 		// tell children to update:
 		this.transform.#children.forEach(c => c.gameObject.update());
 	}
-	calcMatrices(){
+	#calcMatrices(){
 		this.#dirty = false;
 
 		if(this.parent) {

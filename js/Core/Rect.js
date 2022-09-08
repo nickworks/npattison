@@ -176,7 +176,7 @@ const Rect = class {
         const gfx = Game.gfx;
         gfx.beginPath();
         gfx.strokeStyle=color;
-        gfx.strokeWegith=+w;
+        gfx.strokeWeight=+w;
         gfx.rect(this.x,this.y,this.w,this.h);
         gfx.stroke();
     }

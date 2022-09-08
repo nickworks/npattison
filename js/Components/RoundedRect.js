@@ -21,8 +21,6 @@ class RoundedRect extends GameComponent {
     }
     draw(){
         const gfx = Game.gfx;
-        gfx.fillStyle=this.color;
-
         const radius = this.radius;
         const r = this.transform.offset_rect;
         
@@ -83,6 +81,8 @@ class RoundedRect extends GameComponent {
         }
 
         gfx.closePath();
+
+        gfx.fillStyle=this.color;
         gfx.fill();
     }
 }

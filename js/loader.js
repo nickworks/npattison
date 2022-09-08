@@ -47,6 +47,7 @@ loadThen([
         'js/Components/GameComponent.js',
         'js/Components/RenderSprite.js',
         'js/Components/RenderShape.js',
+        'js/Components/RenderCircle.js',
         'js/Components/RenderText.js',
         'js/Components/RenderParticles.js',
         'js/Components/RoundedRect.js',

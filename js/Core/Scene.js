@@ -8,9 +8,6 @@ class Scene extends GameObject {
         this.cam=new Camera();
         this.gravity=1200;
 	}
-    start(){
-        this.transform.anchor = Anchors.Stretch;
-    }
 	draw(){
         Game.view.fill(this.color);
         super.draw();

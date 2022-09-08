@@ -20,7 +20,7 @@ const View = class {
             this.gfx.ellipse(x,y,r,r,0,0,Math.PI*2);
             this.gfx.fill();
         };
-
+        
         return true;
     }
     // fade in or out, returns true when done

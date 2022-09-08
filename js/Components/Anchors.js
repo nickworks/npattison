@@ -203,12 +203,4 @@ class Anchors {
 		gfx.fillStyle="#8F8";
 		gfx.fillCircle(this.#pxAnchorMax.x,this.#pxAnchorMin.y,4);
     }
-	/*
-    drawStroke(color="#F00",w=3){
-        gfx.beginPath();
-        gfx.strokeStyle=color;
-        gfx.strokeWegith=+w;
-        gfx.rect(this.#x,this.#y,this.#w,this.#h);
-        gfx.stroke();
-    }*/
 }

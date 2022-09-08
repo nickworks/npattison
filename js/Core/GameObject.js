@@ -29,7 +29,7 @@ class GameObject {
 		// spawn game-object
         const obj = new GameObject(new Transform(p), customBehavior);
 		// add as a child of this object:
-		this.transform?.addChild(obj.transform, 0);
+		this.transform?.addChild(obj.transform, index);
         return obj;
     }
 	destroy(){

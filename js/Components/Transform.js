@@ -190,36 +190,43 @@ class Transform extends GameComponent {
 		// this is the local origin
 		this.#anchorpos = this.#rect.getPositionOfAnchor(this.#anchor.origin ?? vec2(0));
 
-		const m1 = new Matrix(); // parent-to-local
-		const m2 = new Matrix(); // local-to-parent
+		// world-to-location position, world-to-parent rotation / scale
+		// used for drawing debug boxes aligned with parent transform
+		const worldToParent = (this.parent&&this.parent.#matrix) ? new Matrix(this.parent.#matrix.localToWorld) : new Matrix();
+		
+		this.#matrix.predraw = new Matrix(worldToParent);
+		this.#matrix.predraw.translate(this.x, this.y);
+
+		const parentToLocal = new Matrix(); // parent-to-local
+		const localToParent = new Matrix(); // local-to-parent
 
 		// build parent-origin to local-origin
-		m1.translate(this.#anchorpos.x, this.#anchorpos.y);
-		m1.rotate(this.#angle);
-		m1.scale(this.#scale.x, this.#scale.y);
-
+		
+		// move anchor into position
+		parentToLocal.translate(this.#anchorpos.x, this.#anchorpos.y);
+		// object transform:
+		parentToLocal.translate(this.x, this.y);
+		parentToLocal.rotate(this.#angle);
+		parentToLocal.scale(this.#scale.x, this.#scale.y);
+		
 		// build inverse (local-to-parent)
-		m2.scale(1/this.#scale.x, 1/this.#scale.y);
-		m2.rotate(-this.#angle);
-		m2.translate(-this.#anchorpos.x, -this.#anchorpos.y);
-
-		this.#matrix.parentToLocal = m2;
-		this.#matrix.localToParent = m1;
+		localToParent.scale(1/this.#scale.x, 1/this.#scale.y);
+		localToParent.rotate(-this.#angle);
+		localToParent.translate(-this.x, -this.y);
+		localToParent.translate(-this.#anchorpos.x, -this.#anchorpos.y);
 
 		// multiply matrices by parents' matrices:
-
+		
 		// the predraw matrix is simply the parent's world-matrix
 		// this allows us to draw parent-oriented debug info
-		this.#matrix.predraw = (this.parent&&this.parent.#matrix) ? new Matrix(this.parent.#matrix.localToWorld) : new Matrix();
-		this.#matrix.predraw.translate(this.x, this.y);
 		
-		// where to draw the 
-		this.#matrix.draw = Matrix.mult(this.#matrix.predraw, m1);
-
+		this.#matrix.draw = Matrix.mult(worldToParent, parentToLocal);
+		
 		this.#matrix.localToWorld = new Matrix(this.#matrix.draw);
-		this.#matrix.localToWorld.translate(-this.#anchorpos.x, -this.#anchorpos.y);
+		this.#matrix.worldToLocal = (this.parent&&this.parent.#matrix) ? Matrix.mult(this.parent.#matrix.localToWorld, localToParent) : localToParent;
 		
-		this.#matrix.worldToLocal = (this.parent&&this.parent.#matrix) ? Matrix.mult(m2, this.parent.#matrix.worldToLocal) : m2;
+		this.#matrix.localToParent = localToParent;
+		this.#matrix.parentToLocal = parentToLocal;
 		
 		// tell the other components to refresh layouts
 		this.gameObject.layout();

@@ -8,10 +8,10 @@ class SceneTitle extends Scene {
 
         this.#mover = this.instantiate().with([
             Factory.Sprite('imgs/truffle.png'),
-        ]);
-        this.#dot = this.#mover.instantiate(vec2(),{},2).with([
+        ]).debug();
+        this.#dot = this.#mover.instantiate(vec2(300, 400),{},2).with([
             Factory.Circle(50),
-        ]);
+        ]).debug();
 
     }
     update(){
@@ -22,6 +22,7 @@ class SceneTitle extends Scene {
         this.#mover.transform.position = vec2(x, 200);
         this.#mover.transform.angle = Math.cos(Time.now/1000);
 
-        this.#dot.transform.position = this.#dot.transform.worldToLocal(mouse.pos());
+        //get mouse position in mover transform space:
+        this.#dot.transform.position = this.#mover.transform.worldToLocal(mouse.pos());
     }
 }

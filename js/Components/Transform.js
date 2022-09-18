@@ -179,7 +179,7 @@ class Transform extends GameComponent {
 		this.#dirty = false;
 
 		if(this.parent) {
-			this.#rect = this.#anchor.calcRectFromParent(this.parent.#rect);
+			this.#rect = this.#anchor.calcRectFromParent(this.parent.#offset_rect);
 		} else {
 			this.#rect = Rect.from(Game.view.size);
 		}

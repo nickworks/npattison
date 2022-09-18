@@ -2,6 +2,7 @@ class SceneTitle extends Scene {
 
     #mover = null;
     #dot = null;
+    #dot2 = null;
     #delayUntilSpawnMountain = 0;
     
     constructor(){
@@ -13,6 +14,10 @@ class SceneTitle extends Scene {
         this.#dot = this.#mover.instantiate(vec2(300, 400),{},2).with([
             Factory.Circle(50),
         ]).debug();
+
+        this.#dot2 = this.#dot.instantiate(vec2(100, 0)).with([
+            Factory.Circle(30),
+        ]);
 
         // set background color of scene:
         this.color=Color.HSV(200,50,25);
@@ -46,7 +51,7 @@ class SceneTitle extends Scene {
         this.#mover.transform.angle = Math.cos(Time.now/1000);
 
         //get mouse position in mover transform space:
-        this.#dot.transform.position = this.#mover.transform.worldToLocal(mouse.pos());
+        this.#dot2.transform.position = this.#dot.transform.worldToLocal(mouse.pos());
 
         // spawn mountains:
         this.#delayUntilSpawnMountain -= Time.dt;

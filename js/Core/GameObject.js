@@ -12,38 +12,35 @@ class GameObject {
 	#touchable = false;
 	#layoutable = false;
 
-	constructor(xform, customBehavior={}){
-		this.#customBehavior = customBehavior;
-		
+	constructor(xform){
 		if(typeof xform ==="object" && xform.constructor.name === "Transform") {
-			this.addComponent( xform );
+			this.#transform = xform;
 		} else {
-			this.addComponent( new Transform() );
+			this.#transform = new Transform();
 		}
+		this.#transform.gameObject = this;
 	}
 	get transform() {
-		if(!this.#transform) this.#transform = this.getComponent("Transform");
 		return this.#transform;
 	}
-	instantiate(p=vec2(),customBehavior={},index=0){
+	instantiate(p=vec2(), index=0){
 		// spawn game-object
-        const obj = new GameObject(new Transform(p), customBehavior);
+        const obj = new GameObject(new Transform(p));
 		// add as a child of this object:
 		this.transform?.addChild(obj.transform, index);
         return obj;
     }
 	destroy(){
-
-		if(this.#customBehavior.destroy) this.#customBehavior.destroy();
-
 		this.transform.removeFromParent();
+		this.#components.forEach(c => {
+			if(c.destroy)c.destroy()
+		});
 	}
 	#start(){
 		this.#hasNeverTicked = false;
 		this.#components.forEach(c => {
 			if(c.start)c.start()
 		});
-		if(this.#customBehavior.start) this.#customBehavior.start();
 	}
 	update(){
 
@@ -52,13 +49,19 @@ class GameObject {
 		if(this.#updateable){
 			// update components:
 			this.#components.forEach(c => {
-				if(c.update)c.update()
+				if(c.update)c.update();
 			});
 		}
-		
 		this.transform.update(); // <-- recalc matrices if necessary
-
-		if(this.#customBehavior.update) this.#customBehavior.update();
+	}
+	touch(){
+		if(this.#touchable){
+			// update components:
+			this.#components.forEach(c => {
+				if(c.touch)c.touch();
+			});
+		}
+		this.transform.touch(); // <-- pass event to children
 	}
 	layout(){		
 		// this function is triggered by Transform.calcMatrices(), which is triggered by _dirty flag
@@ -72,9 +75,6 @@ class GameObject {
 		
 		// it is not necessary to call layout() in children.
 		// the children's Transform.calcMatrices() will call their layout().
-
-		// call layout() in customBehavior:
-		if(this.#customBehavior.layout) this.#customBehavior.layout();
 	}
 	draw(){
 		this.transform.render();
@@ -86,8 +86,6 @@ class GameObject {
 				if(c.draw) c.draw()
 			});
 		}
-		// draw custom behavior??
-		if(this.#customBehavior.draw) this.#customBehavior.draw();
 	}
 	with(c){
 		if(!Array.isArray(c)) c = [c];

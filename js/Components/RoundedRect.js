@@ -15,10 +15,6 @@ class RoundedRect extends GameComponent {
             bl: RoundedRect.ROUND,
         };
     }
-    
-    touch(){
-        this.color = "#fff";
-    }
     draw(){
         const gfx = Game.gfx;
         const radius = this.radius;

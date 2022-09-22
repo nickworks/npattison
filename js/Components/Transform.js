@@ -175,6 +175,10 @@ class Transform extends GameComponent {
 		// tell children to update:
 		this.transform.#children.forEach(c => c.gameObject.update());
 	}
+	touch(){
+		// pass touch event to children:
+		this.transform.#children.forEach(c => c.gameObject.touch());
+	}
 	#calcMatrices(){
 		this.#dirty = false;
 
@@ -215,8 +219,6 @@ class Transform extends GameComponent {
 		parentToLocal.translate(-this.x, -this.y);
 		parentToLocal.translate(-this.#anchorpos.x, -this.#anchorpos.y);
 
-		// multiply matrices by parents' matrices:
-		
 		// the predraw matrix is simply the parent's world-matrix
 		// this allows us to draw parent-oriented debug info
 		

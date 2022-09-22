@@ -21,4 +21,7 @@ const Factory = {
 		if(margin===undefined) margin=padding;
 		return new SplitPanel(children, vert, padding, margin);
 	},
+	Custom(o={}){
+		return new CustomComponent(o);
+	},
 };

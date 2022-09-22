@@ -1,12 +1,14 @@
 class Scene extends GameObject {
 
     color = "#888";
+    gravity = 1200;
+    #cam = new Camera();
 
+    get cam(){
+        return this.#cam;
+    }
     constructor(){  
         super();
-
-        this.cam=new Camera();
-        this.gravity=1200;
 	}
 	draw(){
         Game.view.fill(this.color);

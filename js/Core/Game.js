@@ -84,6 +84,7 @@ const Game = class {
         });
         document.body.addEventListener("click",()=>{
             //sfx.audio.resume().then(()=>sfx.loadSounds());
+            Game.scene?.touch();
         })
         keyboard.setup();
         mouse.setup(Game.#view.canvas, self);

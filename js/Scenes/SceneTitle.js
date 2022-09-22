@@ -11,12 +11,18 @@ class SceneTitle extends Scene {
         this.#mover = this.instantiate().with([
             Factory.Sprite('imgs/truffle.png'),
         ]).debug();
-        this.#dot = this.#mover.instantiate(vec2(300, 400),{},2).with([
+        
+        this.#dot = this.#mover.instantiate(vec2(300, 400), 2).with([
             Factory.Circle(50),
         ]).debug();
 
         this.#dot2 = this.#dot.instantiate(vec2(100, 0)).with([
             Factory.Circle(30),
+            Factory.Custom({
+                touch:()=>{
+                    console.log("!!!");
+                },
+            }),
         ]);
 
         // set background color of scene:
@@ -51,12 +57,11 @@ class SceneTitle extends Scene {
         this.#mover.transform.angle = Math.cos(Time.now/1000);
 
         //get mouse position in mover transform space:
-        this.#dot2.transform.position = this.#dot.transform.worldToLocal(mouse.pos());
+        //this.#dot2.transform.position = this.#dot.transform.worldToLocal(mouse.pos());
 
         // spawn mountains:
         this.#delayUntilSpawnMountain -= Time.dt;
         if(this.#delayUntilSpawnMountain <= 0) this.#makeNextRange();
-        
         
         // spin card:
         this.cardSpin.transform.angle = Math.sin(Time.now/500) * .25;

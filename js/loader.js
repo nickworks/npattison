@@ -45,6 +45,7 @@ loadThen([
     // load components:
     [
         'js/Components/GameComponent.js',
+        'js/Components/CustomComponent.js',
         'js/Components/RenderSprite.js',
         'js/Components/RenderShape.js',
         'js/Components/RenderCircle.js',
